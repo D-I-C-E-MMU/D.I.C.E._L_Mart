@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Welcome to Firebase Hosting</title>
+
+	<!-- update the version number as needed -->
+	<script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
+	<!-- include only the Firebase features as you need -->
+	<script src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
+	<script src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
+
+	<!-- <script defer src="/__/firebase/10.7.1/firebase-database-compat.js"></script>
+	<script defer src="/__/firebase/10.7.1/firebase-functions-compat.js"></script>
+	<script defer src="/__/firebase/10.7.1/firebase-messaging-compat.js"></script>
+	<script defer src="/__/firebase/10.7.1/firebase-storage-compat.js"></script>
+	<script defer src="/__/firebase/10.7.1/firebase-analytics-compat.js"></script>
+	<script defer src="/__/firebase/10.7.1/firebase-remote-config-compat.js"></script> -->
+	<!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+	<script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+	<script src="firebase/config.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+	<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+	<script src="firebase/auth.js"></script>
+
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div id="message">
+		<h2>Welcome</h2>
+		<h1>Firebase Hosting Setup Complete</h1>
+		<p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something
+			extraordinary!</p>
+		<a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+	</div>
+
+	<p id="load">Firebase SDK Loading&hellip;</p>
+
+
+
+	<div id="firebaseui-auth-container"></div>
+
+	<div id="sign-in-status"></div>
+	<div id="sign-in"></div>
+	<pre id="account-details"></pre>
+
+	<button id="sign-out">Sign Out</button>
+
+
+
+
+</body>
+
+</html>
