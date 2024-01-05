@@ -5,3 +5,5 @@
 To switch between staging and production, use:  
 `firebase use default` for staging  
 `firebase use prod` for production  
+Warning: production project is not defined nor setup yet
+
