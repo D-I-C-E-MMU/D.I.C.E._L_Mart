@@ -1,5 +1,9 @@
 
-const app = firebase.app();
+// Firebase Initialization
+const firebaseApp = firebase.app();
+
+// Firebase's Firestore Database
+const firestoreDB = firebase.firestore();
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -9,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let features = [
             'auth',
             'firestore',
-        ].filter(feature => typeof app[feature] === 'function');
+        ].filter(feature => typeof firebaseApp[feature] === 'function');
         loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
     }
     catch (e) {
