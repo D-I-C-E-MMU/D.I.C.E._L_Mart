@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "dice-staging",
+    "prod": "other-name"
+  }
+}
