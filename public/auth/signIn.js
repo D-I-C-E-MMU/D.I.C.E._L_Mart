@@ -37,8 +37,8 @@ function signIn(firebaseUser) {
 
 function verifySignInThroughFirebase(user) {
     let uid = user.uid;
-    console.log("Verifying uid: " + uid);
     return playerDB.doc(uid).get().then((playerDoc) => {
+
         if (playerDoc.exists) {
             console.log(`Player Doc ${uid} exists.`);
             console.log(playerDoc.data());
@@ -46,6 +46,7 @@ function verifySignInThroughFirebase(user) {
         }
         console.log(`Player Doc ${uid} does not exist.`);
         return null;
+
     }).catch((error) => {
         console.log(`Player Doc ${uid} failed to retrieve.`);
         console.log(error);
@@ -59,9 +60,11 @@ function createNewPlayerThroughFirebase(user) {
         email: user.email,
         name: user.displayName,
     }
+
     return playerDB.doc(user.uid).set(player).then(() => {
         console.log("New player created");
         return player;
+        
     }).catch((error) => {
         console.log(error);
         console.log("Failed to create new player");

@@ -3,6 +3,7 @@ const validPlayerKeys = ["email", "name"]
 
 // Globally saved player detail. Contains cached (upon log in) database player information
 let player = null;
+let userUID = null;
 
 function listHasAllElements(list, elements) {
     const checker = (arr, target) => target.every(v => arr.includes(v));
@@ -33,6 +34,7 @@ function verifySignIn(onSuccessCallback, onFailureCallback) {
         if (firebaseUser) {
             // User is signed in
             player = user;
+            userUID = firebaseUser.uid;
             onSuccessCallback();
         }
         else {
