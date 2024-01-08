@@ -16,13 +16,18 @@
     <script src="auth/verifyPlayer.js"></script>
     <script src="auth/signOut.js"></script>
     <script>
-        verifySignInOrReturnToIndex();
+        verifySignInOrReturnToIndex((player) => {
+			document.querySelector("#player-name").innerHTML = player.name;
+			document.querySelector("#player-email").innerHTML = player.email;
+		});
     </script>
 
 </head>
 
 <body>
 
+	<p id="player-name"></p>
+	<p id="player-email"></p>
     <button id="sign-out-btn">Sign Out</button>
 
 </body>

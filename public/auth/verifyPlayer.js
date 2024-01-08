@@ -1,6 +1,9 @@
 
 const validPlayerKeys = ["email", "name"]
 
+// Globally saved player detail. Contains cached (upon log in) database player information
+let player = null;
+
 function listHasAllElements(list, elements) {
     const checker = (arr, target) => target.every(v => arr.includes(v));
     return checker(list, elements);
@@ -23,12 +26,13 @@ function retrieveUserFromLocalStorage() {
 function verifySignIn(onSuccessCallback, onFailureCallback) {
     let user = retrieveUserFromLocalStorage();
     if (!user) {
-        console.log("No LocalStorage");
+        console.log("No LocalStorage for user found");
         onFailureCallback();
     }
     firebase.auth().onAuthStateChanged((firebaseUser) => {
         if (firebaseUser) {
             // User is signed in
+            player = user;
             onSuccessCallback();
         }
         else {
@@ -61,7 +65,7 @@ function clearLocalStorage() {
 function verifySignInOrReturnToIndex(onSuccessCallback) {
     verifySignIn(() => {
         if (onSuccessCallback) {
-            onSuccessCallback();
+            onSuccessCallback(player);
         }
     }, () => {
         clearAndRedirectToIndex();
