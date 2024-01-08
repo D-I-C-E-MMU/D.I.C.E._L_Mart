@@ -18,41 +18,23 @@ function showLoginUI() {
     ui.start('#firebaseui-auth-container', firebaseUIConfig);
 }
 
-function redirectToLogin() {
-    window.location.replace("");
-}
-
-function signOut() {
-    firebase.auth().signOut().then(() => {
-        console.log('Signed Out');
-
-        // User is signed out.
-        document.getElementById('account-details').textContent = 'null';
-    }, (error) => {
-        console.error('Sign Out Error', error);
-    }).finally(() => {
-        redirectToLogin();
-    });
-}
-
-
 initApp = function () {
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            signIn(user);
-        } else {
-            //signOut();
+    firebase.auth().onAuthStateChanged((firebaseUser) => {
+        if (firebaseUser) {
+            // User is signed in
+            console.log("User is signed in");
+            signIn(firebaseUser);
+        }
+        else {
+            console.log("User is NOT signed in");
             showLoginUI();
         }
-    }, function (error) {
-        console.log(error);
+    }, (error) => {
+        console.log("Error signing in");
+        console.error(error);
     });
-};
+}
 
 window.addEventListener('load', () => {
-    initApp()
-
-    document.querySelector("#sign-out").addEventListener("click", () => {
-        signOut();
-    });
-});
+    initApp();
+})

@@ -1,27 +1,35 @@
 
 const playerDB = firestoreDB.collection("players")
 
-// Sign in via Firebase. Executes only the first time the user is signed in.
+// Sign in via Firebase. Executes only the first time the user is signed in, or when the user .
 // Does not run when the user is already signed in (with the existence of 'login' in localStorage)
-function signIn(rawUser) {
+function signIn(firebaseUser) {
     let user;
-    rawUser.getIdToken().then((accessToken) => {
+    firebaseUser.getIdToken().then((accessToken) => {
         user = {
-            displayName: rawUser.displayName,
-            email: rawUser.email,
-            photoURL: rawUser.photoURL,
-            uid: rawUser.uid,
+            displayName: firebaseUser.displayName,
+            email: firebaseUser.email,
+            photoURL: firebaseUser.photoURL,
+            uid: firebaseUser.uid,
             accessToken: accessToken,
-            providerData: rawUser.providerData
+            providerData: firebaseUser.providerData
         }
     }).then(() => {
         verifySignInThroughFirebase(user).then((playerData) => {
             if (playerData) {
                 console.log("Gonna login with playerData")
+                saveAndSignInToUser(playerData);
             }
             else {
                 console.log("no player data to login with");
-                createNewPlayerThroughFirebase(user);
+                createNewPlayerThroughFirebase(user).then((playerData) => {
+                    if (playerData) {
+                        saveAndSignInToUser(playerData);
+                    }
+                    else {
+                        console.error("Failed to create new player!");
+                    }
+                });
             }
         });
     });
@@ -47,24 +55,26 @@ function verifySignInThroughFirebase(user) {
 
 function createNewPlayerThroughFirebase(user) {
     console.log(`Creating a new player: ${user.uid}, ${user.displayName}, ${user.email}`);
-    playerDB.doc(user.uid).set({
+    let player = {
         email: user.email,
         name: user.displayName,
-        admin: true,
-    }).then(() => {
+    }
+    return playerDB.doc(user.uid).set(player).then(() => {
         console.log("New player created");
+        return player;
     }).catch((error) => {
         console.log(error);
         console.log("Failed to create new player");
-    })
+        return null;
+    });
 }
 
 function saveAndSignInToUser(user) {
     saveSignInToLocalStorage(user);
-    window.location.replace("/player.html");
+    window.location.href = "/player.html";
 }
 
 function saveSignInToLocalStorage(user) {
     // Do NOT save the uid or accessToken to localStorage
-    localStorage.setItem("login", user)
+    localStorage.setItem("user", JSON.stringify(user));
 }
