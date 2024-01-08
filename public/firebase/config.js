@@ -2,9 +2,6 @@
 // Firebase Initialization
 const firebaseApp = firebase.app();
 
-// Firebase's Firestore Database
-const firestoreDB = firebase.firestore();
-
 document.addEventListener('DOMContentLoaded', () => {
     try {
         let features = [
