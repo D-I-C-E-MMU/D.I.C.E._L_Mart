@@ -1,6 +1,4 @@
 
-const validPlayerKeys = ["email", "name"]
-
 // Globally saved player detail. Contains cached (upon log in) database player information
 let player = null;
 let userUID = null;
@@ -10,30 +8,30 @@ function listHasAllElements(list, elements) {
     return checker(list, elements);
 }
 
-function retrieveUserFromLocalStorage() {
-    let userStr = localStorage.getItem("user");
-    if (!userStr) {
+function retrievePlayerFromStorage() {
+    let playerStr = localStorage.getItem(localPlayerID);
+    if (!playerStr) {
         return null;
     }
-    let user = JSON.parse(userStr);
-    if (user) {
-        if (listHasAllElements(Object.keys(user), validPlayerKeys)) {
-            return user;
+    let playerData = JSON.parse(playerStr);
+    if (playerData) {
+        if (listHasAllElements(Object.keys(playerData), validPlayerKeys)) {
+            return playerData;
         }
     }
     return null;
 }
 
 function verifySignIn(onSuccessCallback, onFailureCallback) {
-    let user = retrieveUserFromLocalStorage();
-    if (!user) {
-        console.log("No LocalStorage for user found");
+    let playerData = retrievePlayerFromStorage();
+    if (!playerData) {
+        console.log("No LocalStorage for player found");
         onFailureCallback();
     }
     firebase.auth().onAuthStateChanged((firebaseUser) => {
         if (firebaseUser) {
             // User is signed in
-            player = user;
+            player = playerData;
             userUID = firebaseUser.uid;
             onSuccessCallback();
         }
@@ -48,7 +46,7 @@ function verifySignIn(onSuccessCallback, onFailureCallback) {
 
 // Clear localStorage and then redirect back to index (main page for logging in)
 function clearAndRedirectToIndex() {
-    clearLocalStorage();
+    clearStorage();
     firebase.auth().signOut().then(() => {
         console.log('Signed Out');
     }, (error) => {
@@ -56,11 +54,12 @@ function clearAndRedirectToIndex() {
     }).finally(() => {
         // Redirect to index
         console.log("Redirecting to index...")
-        window.location.href = "/index.html";
+        window.location.href = "/";
     });
 }
 
-function clearLocalStorage() {
+function clearStorage() {
+    sessionStorage.clear();
     localStorage.clear();
 }
 

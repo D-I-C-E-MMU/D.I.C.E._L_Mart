@@ -1,6 +1,4 @@
 
-const playerDB = firestoreDB.collection("players")
-
 // Sign in via Firebase. Executes only the first time the user is signed in, or when the user .
 // Does not run when the user is already signed in (with the existence of 'login' in localStorage)
 function signIn(firebaseUser) {
@@ -35,6 +33,7 @@ function signIn(firebaseUser) {
     });
 }
 
+// Firestore Read Get
 function verifySignInThroughFirebase(user) {
     let uid = user.uid;
     return playerDB.doc(uid).get().then((playerDoc) => {
@@ -48,36 +47,37 @@ function verifySignInThroughFirebase(user) {
         return null;
 
     }).catch((error) => {
-        console.log(`Player Doc ${uid} failed to retrieve.`);
-        console.log(error);
+        console.error(`Player Doc ${uid} failed to retrieve.`);
+        console.error(error);
         return null;
     });
 }
 
+// Firestore Write Create
 function createNewPlayerThroughFirebase(user) {
     console.log(`Creating a new player: ${user.uid}, ${user.displayName}, ${user.email}`);
-    let player = {
+    let playerData = {
         email: user.email,
         name: user.displayName,
     }
 
-    return playerDB.doc(user.uid).set(player).then(() => {
+    return playerDB.doc(user.uid).set(playerData).then(() => {
         console.log("New player created");
-        return player;
+        return playerData;
         
     }).catch((error) => {
-        console.log(error);
-        console.log("Failed to create new player");
+        console.error(error);
+        console.error("Failed to create new player");
         return null;
     });
 }
 
 function saveAndSignInToUser(user) {
-    saveSignInToLocalStorage(user);
+    saveSignInToStorage(user);
     window.location.href = "/player.html";
 }
 
-function saveSignInToLocalStorage(user) {
+function saveSignInToStorage(user) {
     // Do NOT save the uid or accessToken to localStorage
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem(localPlayerID, JSON.stringify(user));
 }
