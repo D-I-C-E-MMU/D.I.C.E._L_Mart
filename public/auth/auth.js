@@ -19,32 +19,7 @@ function showLoginUI() {
 }
 
 function redirectToLogin() {
-    window.location.href = "./abc/indeasdx.html";
-}
-
-function signIn(user) {
-    // User is signed in.
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var uid = user.uid;
-    var phoneNumber = user.phoneNumber;
-    var providerData = user.providerData;
-    user.getIdToken().then(function (accessToken) {
-        document.getElementById('sign-in-status').textContent = 'Signed in';
-        document.getElementById('sign-in').textContent = 'Sign out';
-        document.getElementById('account-details').textContent = JSON.stringify({
-            displayName: displayName,
-            email: email,
-            emailVerified: emailVerified,
-            phoneNumber: phoneNumber,
-            photoURL: photoURL,
-            uid: uid,
-            accessToken: accessToken,
-            providerData: providerData
-        }, null, '  ');
-    });
+    window.location.replace("");
 }
 
 function signOut() {
@@ -52,8 +27,6 @@ function signOut() {
         console.log('Signed Out');
 
         // User is signed out.
-        document.getElementById('sign-in-status').textContent = 'Signed out';
-        document.getElementById('sign-in').textContent = 'Sign in';
         document.getElementById('account-details').textContent = 'null';
     }, (error) => {
         console.error('Sign Out Error', error);
@@ -65,11 +38,11 @@ function signOut() {
 
 initApp = function () {
     firebase.auth().onAuthStateChanged(function (user) {
-        console.log(user);
         if (user) {
             signIn(user);
         } else {
             //signOut();
+            showLoginUI();
         }
     }, function (error) {
         console.log(error);
