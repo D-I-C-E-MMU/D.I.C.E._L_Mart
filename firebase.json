@@ -13,6 +13,14 @@
 		],
 		"rewrites": [
 			{
+				"source": "/admin/home",
+				"destination": "/admin/adminHome.html"
+			},
+			{
+				"source": "/admin",
+				"destination": "/admin/admin.html"
+			},
+			{
 				"source": "**",
 				"destination": "/redirect.html"
 			}
