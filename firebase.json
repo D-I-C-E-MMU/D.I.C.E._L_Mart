@@ -1,20 +1,29 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+	"firestore": {
+		"rules": "firestore.rules",
+		"indexes": "firestore.indexes.json"
+	},
+	"hosting": {
+		"public": "public",
+		"cleanUrls": true,
+		"ignore": [
+			"firebase.json",
+			"**/.*",
+			"**/node_modules/**"
+		],
+		"rewrites": [
+			{
+				"source": "/admin/home",
+				"destination": "/admin/adminHome.html"
+			},
+			{
+				"source": "/admin",
+				"destination": "/admin/admin.html"
+			},
+			{
+				"source": "**",
+				"destination": "/redirect.html"
+			}
+		]
+	}
 }
