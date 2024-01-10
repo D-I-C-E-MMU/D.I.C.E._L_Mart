@@ -1,4 +1,6 @@
 
+const notAdminURL = "/";
+
 let admin = null;
 
 function verifyAdminOrReturnToIndex(onSuccessCallback) {
@@ -66,7 +68,5 @@ function saveAdminToStorage(adminData) {
 }
 
 function redirectToIndex() {
-    // Redirect to index
-    console.log("Redirecting to index...")
-    window.location.href = "/";
+    window.location.href = notAdminURL;
 }

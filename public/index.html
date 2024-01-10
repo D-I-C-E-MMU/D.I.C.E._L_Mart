@@ -26,21 +26,35 @@
 
 	<script src="/firebase/config.js"></script>
 	<script src="/firebase/firestore.js"></script>
-
-	<script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
-	<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
-	<script src="/auth/signIn.js"></script>
-	<script src="/auth/authUI.js"></script>
-
+	<script src="/auth/verifyPlayer.js"></script>
+	<script src="/auth/signOut.js"></script>
+	<script>
+		window.addEventListener("load", () => {
+			verifySignIn(() => {
+				document.querySelector("#player-name").innerHTML = player.name;
+				document.querySelector("#player-email").innerHTML = player.email;
+				document.querySelector("#sign-out-btn").hidden = false;
+			}, () => {
+				document.querySelector("#sign-in-btn").hidden = false;
+				document.querySelector("#sign-in-btn").addEventListener("click", () => {
+					window.location.href = "/login";
+				})
+			});
+		})
+	</script>
 
 	<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
 	<h1>D.I.C.E L Mart</h1>
 
-	<div id="firebaseui-auth-container"></div>
+	<p id="player-name"></p>
+	<p id="player-email"></p>
+	<button id="sign-in-btn" hidden>Sign In</button>
+	<button id="sign-out-btn" hidden>Sign Out</button>
 
 </body>
 
