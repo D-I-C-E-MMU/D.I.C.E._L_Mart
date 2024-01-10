@@ -1,4 +1,6 @@
 
+const notSignedInURL = "/"
+
 // Globally saved player detail. Contains cached (upon log in) database player information
 let player = null;
 let userUID = null;
@@ -54,7 +56,7 @@ function clearAndRedirectToIndex() {
     }).finally(() => {
         // Redirect to index
         console.log("Redirecting to index...")
-        window.location.href = "/";
+        window.location.href = notSignedInURL;
     });
 }
 

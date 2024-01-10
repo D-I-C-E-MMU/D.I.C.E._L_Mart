@@ -1,4 +1,6 @@
 
+const signedInURL = "/";
+
 // Sign in via Firebase. Executes only the first time the user is signed in, or when the user .
 // Does not run when the user is already signed in (with the existence of 'login' in localStorage)
 function signIn(firebaseUser) {
@@ -74,7 +76,7 @@ function createNewPlayerThroughFirebase(user) {
 
 function saveAndSignInToUser(user) {
     saveSignInToStorage(user);
-    window.location.href = "/player.html";
+    window.location.href = signedInURL;
 }
 
 function saveSignInToStorage(user) {
