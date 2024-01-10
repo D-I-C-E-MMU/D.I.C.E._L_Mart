@@ -24,53 +24,61 @@ function retrievePlayerFromStorage() {
     return null;
 }
 
-function verifySignIn(onSuccessCallback, onFailureCallback) {
+function verifySignIn(onCompleted) {
     let playerData = retrievePlayerFromStorage();
     if (!playerData) {
         console.log("No LocalStorage for player found");
-        onFailureCallback();
+        onPlayerUpdated(player);
+        if (onCompleted) onCompleted(player);
+        return;
     }
     firebase.auth().onAuthStateChanged((firebaseUser) => {
         if (firebaseUser) {
             // User is signed in
             player = playerData;
             userUID = firebaseUser.uid;
-            onSuccessCallback();
         }
         else {
-            onFailureCallback();
+            clear();
         }
+        onPlayerUpdated(player);
+        if (onCompleted) onCompleted(player);
     }, (error) => {
         console.error(error);
-        onFailureCallback();
+        clear();
+        onPlayerUpdated(player);
+        if (onCompleted) onCompleted(player);
     });
 }
 
 // Clear localStorage and then redirect back to index (main page for logging in)
 function clearAndRedirectToIndex() {
-    clearStorage();
-    firebase.auth().signOut().then(() => {
+    clear();
+    signOut().then(() => {
         console.log('Signed Out');
     }, (error) => {
         console.error('Sign Out Error', error);
     }).finally(() => {
         // Redirect to index
-        console.log("Redirecting to index...")
         window.location.href = notSignedInURL;
     });
 }
 
-function clearStorage() {
+function clear() {
+    player = null;
     sessionStorage.clear();
     localStorage.clear();
 }
 
 function verifySignInOrReturnToIndex(onSuccessCallback) {
     verifySignIn(() => {
-        if (onSuccessCallback) {
-            onSuccessCallback(player);
+        if (player) {
+            if (onSuccessCallback) {
+                onSuccessCallback(player);
+            }
         }
-    }, () => {
-        clearAndRedirectToIndex();
+        else {
+            clearAndRedirectToIndex();
+        }
     });
 }
