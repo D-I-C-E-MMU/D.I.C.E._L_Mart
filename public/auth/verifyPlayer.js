@@ -28,6 +28,7 @@ function verifySignIn(onCompleted) {
     let playerData = retrievePlayerFromStorage();
     if (!playerData) {
         console.log("No LocalStorage for player found");
+        clear();
         onPlayerUpdated(player);
         if (onCompleted) onCompleted(player);
         return;
@@ -36,6 +37,7 @@ function verifySignIn(onCompleted) {
         if (firebaseUser) {
             // User is signed in
             player = playerData;
+            player.photoURL = firebaseUser.photoURL;
             userUID = firebaseUser.uid;
         }
         else {
