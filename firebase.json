@@ -22,11 +22,11 @@
 			},
 			{
 				"source": "/admin/home",
-				"destination": "/admin/adminHome.html"
+				"destination": "/admin/admin.html"
 			},
 			{
 				"source": "/admin",
-				"destination": "/admin/admin.html"
+				"destination": "/admin/adminVerification.html"
 			},
 			{
 				"source": "**",

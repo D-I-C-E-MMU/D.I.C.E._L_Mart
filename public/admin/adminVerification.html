@@ -14,25 +14,17 @@
 	<script src="/firebase/config.js"></script>
 	<script src="/firebase/firestore.js"></script>
 	<script src="/ui/general.js"></script>
-    <script src="/auth/verifyPlayer.js"></script>
-    <script src="/auth/signOut.js"></script>
-    <script src="/admin/verifyAdmin.js"></script>
-    <script>
-        verifyAdminOrReturnToIndex((admin) => {
-			document.querySelector("#player-name").innerHTML = player.name;
-			document.querySelector("#player-email").innerHTML = player.email;
-			document.querySelector("#admin-rank").innerHTML = admin.rank;
-		});
-    </script>
+	<script src="/admin/ui/adminGeneral.js"></script>
+
+	<script src="/auth/verifyPlayer.js"></script>
+	<script src="/admin/verifyAdmin.js"></script>
+	<script>
+		verifyFirestoreAdmin();
+	</script>
 
 </head>
 
 <body>
-
-	<p id="player-name"></p>
-	<p id="player-email"></p>
-	<p id="admin-rank"></p>
-    <button id="sign-out-btn">Sign Out</button>
 
 </body>
 

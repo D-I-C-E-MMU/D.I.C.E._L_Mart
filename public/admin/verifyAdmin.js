@@ -3,30 +3,20 @@ const notAdminURL = "/";
 
 let admin = null;
 
-function verifyAdminOrReturnToIndex(onSuccessCallback) {
-    verifySignInOrReturnToIndex(() => {
-        let adminData = retrieveAdminFromStorage();
-        if (adminData) {
-            admin = adminData;
-            if (onSuccessCallback) {
-                onSuccessCallback(adminData);
-            }
+function retrieveAdminFromStorage() {
+    let adminStr = localStorage.getItem(storageAdminID);
+    if (!adminStr) {
+        return null;
+    }
+    let adminData = JSON.parse(adminStr);
+    if (adminData) {
+        if (listHasAllElements(Object.keys(adminData), validAdminKeys)) {
+            return adminData;
         }
-        else {
-            verifyAdminThroughFirebase(userUID).then((adminData) => {
-                if (adminData) {
-                    saveAdminToStorage(adminData);
-                    admin = adminData;
-                    if (onSuccessCallback) {
-                        onSuccessCallback(adminData);
-                    }
-                }
-                else {
-                    redirectToIndex();
-                }
-            });
-        }
-    })
+        // Remove invalid data
+        localStorage.removeItem(storageAdminID);
+    }
+    return null;
 }
 
 // Firestore Read Get
@@ -48,25 +38,40 @@ function verifyAdminThroughFirebase(userUID) {
     });
 }
 
-function retrieveAdminFromStorage() {
-    let adminStr = sessionStorage.getItem(localAdminID);
-    if (!adminStr) {
-        return null;
-    }
-    let adminData = JSON.parse(adminStr);
-    if (adminData) {
-        if (listHasAllElements(Object.keys(adminData), validAdminKeys)) {
-            return adminData;
-        }
-    }
-    return null;
-}
-
 function saveAdminToStorage(adminData) {
-    // Using session storage because admin is more sensitive
-    sessionStorage.setItem(localAdminID, JSON.stringify(adminData));
+    localStorage.setItem(storageAdminID, JSON.stringify(adminData));
 }
 
-function redirectToIndex() {
-    window.location.href = notAdminURL;
+// Only verifies that admin is verified through Firestore. Will not make a request to Firebase.
+// Security: Even if the user can inject fake admin data into localStorage, the user will fail all checks setup in Firestore's rules.
+function verifyLocalAdmin(onSuccessCallback) {
+    verifySignIn(() => {
+        let adminData = retrieveAdminFromStorage();
+        if (adminData) {
+            admin = adminData;
+            if (onSuccessCallback) onSuccessCallback(adminData);
+            return;
+        }
+        window.location.href = homeURL;
+    })
+}
+
+// Verifies the admin. If the admin is not already verified (localStorage), verify if the user is an admin through Firestore.
+function verifyFirestoreAdmin() {
+    verifySignIn(() => {
+        let adminData = retrieveAdminFromStorage();
+        if (adminData) {
+            admin = adminData;
+            return;
+        }
+        verifyAdminThroughFirebase(userUID).then((adminData) => {
+            if (adminData) {
+                saveAdminToStorage(adminData);
+                admin = adminData;
+                window.location.replace(adminHomeURL);
+                return;
+            }
+            window.location.href = homeURL;
+        });
+    })
 }

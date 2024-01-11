@@ -79,5 +79,5 @@ function saveAndSignInToUser(user) {
 
 function saveSignInToStorage(user) {
     // Do NOT save the uid or accessToken to localStorage
-    localStorage.setItem(localPlayerID, JSON.stringify(user));
+    localStorage.setItem(storagePlayerID, JSON.stringify(user));
 }
