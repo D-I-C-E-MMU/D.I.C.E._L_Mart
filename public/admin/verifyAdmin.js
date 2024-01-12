@@ -62,6 +62,7 @@ function verifyFirestoreAdmin() {
         let adminData = retrieveAdminFromStorage();
         if (adminData) {
             admin = adminData;
+            window.location.replace(adminHomeURL);
             return;
         }
         verifyAdminThroughFirebase(userUID).then((adminData) => {

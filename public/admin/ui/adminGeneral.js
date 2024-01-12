@@ -1,8 +1,18 @@
 
 const adminHomeURL = "/admin/home"
+const adminManagementURL = "/admin/adminManagement"
 
 let onAdminUpdatedCallbacks = [];
 let onAdminUpdatedCallbackEmitted = false;
+
+function initAdminManagement() {
+    const adminManagementBtn = document.querySelectorAll(".admin-management-btn");
+    adminManagementBtn.forEach((button) => {
+        button.addEventListener("click", () => {
+            window.location.href = adminManagementURL;
+        });
+    });
+}
 
 function onAdminUpdated(admin) {
     onAdminUpdatedCallbackEmitted = true;
@@ -17,3 +27,7 @@ function addOnAdminUpdated(callback) {
         callback(admin);
     }
 }
+
+window.addEventListener('load', () => {
+    initAdminManagement();
+});
