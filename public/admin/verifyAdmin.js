@@ -1,6 +1,4 @@
 
-const notAdminURL = "/";
-
 let admin = null;
 
 function retrieveAdminFromStorage() {
