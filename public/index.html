@@ -6,9 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>D.I.C.E L Mart</title>
 
-	<!-- update the version number as needed -->
 	<script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
-	<!-- include only the Firebase features as you need -->
 	<script src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
 	<script src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
 
@@ -26,21 +24,49 @@
 
 	<script src="/firebase/config.js"></script>
 	<script src="/firebase/firestore.js"></script>
+	<script src="/ui/general.js"></script>
 
-	<script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
-	<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
-	<script src="/auth/signIn.js"></script>
-	<script src="/auth/authUI.js"></script>
+	<script src="/auth/verifyPlayer.js"></script>
+	<script src="/auth/signOut.js"></script>
+	<script>
+		verifySignIn();
+	</script>
 
-
-	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+
+	<div id="top-bar">
+		<div id="top-bar-logo" class="flex">
+			<img src="/images/D.I.C.E Logo Black.png">
+			<p>D.I.C.E L Mart</p>
+		</div>
+		<div id="top-bar-account">
+			<div id="top-bar-account-profile" class="flex">
+				<p id="top-bar-player-name"></p>
+				<div>
+					<img class="player-photo" id="top-bar-player-photo" src="" hidden>
+					<div id="top-bar-empty-user">
+						<svg class="player-photo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+							fill="currentColor">
+							<path fill-rule="evenodd" clip-rule="evenodd"
+								d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+						</svg>
+					</div>
+				</div>
+			</div>
+			<div id="top-bar-account-dropdown">
+				<button id="top-bar-sign-in-btn" class="sign-in-btn">Sign In</button>
+				<button id="top-bar-sign-out-btn" class="sign-out-btn" hidden>Sign Out</button>
+			</div>
+		</div>
+	</div>
+
 	<h1>D.I.C.E L Mart</h1>
 
-	<div id="firebaseui-auth-container"></div>
+	<link rel="stylesheet" href="/style.css">
+	<script src="/ui/topBar.js"></script>
 
 </body>
 

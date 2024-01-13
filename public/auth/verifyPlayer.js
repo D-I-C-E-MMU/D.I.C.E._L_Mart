@@ -1,15 +1,12 @@
 
+const notSignedInURL = "/"
+
 // Globally saved player detail. Contains cached (upon log in) database player information
 let player = null;
 let userUID = null;
 
-function listHasAllElements(list, elements) {
-    const checker = (arr, target) => target.every(v => arr.includes(v));
-    return checker(list, elements);
-}
-
 function retrievePlayerFromStorage() {
-    let playerStr = localStorage.getItem(localPlayerID);
+    let playerStr = localStorage.getItem(storagePlayerID);
     if (!playerStr) {
         return null;
     }
@@ -18,57 +15,48 @@ function retrievePlayerFromStorage() {
         if (listHasAllElements(Object.keys(playerData), validPlayerKeys)) {
             return playerData;
         }
+        // Remove invalid data
+        localStorage.removeItem(storagePlayerID);
     }
     return null;
 }
 
-function verifySignIn(onSuccessCallback, onFailureCallback) {
+function verifySignIn(onCompleted) {
     let playerData = retrievePlayerFromStorage();
     if (!playerData) {
         console.log("No LocalStorage for player found");
-        onFailureCallback();
+        clear();
+        onPlayerUpdated(player);
+        if (onCompleted) onCompleted(player);
+        return;
     }
+    
+    // Update existing playerData to make UI more responsive
+    player = playerData;
+    onPlayerUpdated(player);
+
     firebase.auth().onAuthStateChanged((firebaseUser) => {
         if (firebaseUser) {
             // User is signed in
             player = playerData;
+            player.photoURL = firebaseUser.photoURL;
             userUID = firebaseUser.uid;
-            onSuccessCallback();
         }
         else {
-            onFailureCallback();
+            clear();
         }
+        onPlayerUpdated(player);
+        if (onCompleted) onCompleted(player);
     }, (error) => {
         console.error(error);
-        onFailureCallback();
+        clear();
+        onPlayerUpdated(player);
+        if (onCompleted) onCompleted(player);
     });
 }
 
-// Clear localStorage and then redirect back to index (main page for logging in)
-function clearAndRedirectToIndex() {
-    clearStorage();
-    firebase.auth().signOut().then(() => {
-        console.log('Signed Out');
-    }, (error) => {
-        console.error('Sign Out Error', error);
-    }).finally(() => {
-        // Redirect to index
-        console.log("Redirecting to index...")
-        window.location.href = "/";
-    });
-}
-
-function clearStorage() {
+function clear() {
+    player = null;
     sessionStorage.clear();
     localStorage.clear();
-}
-
-function verifySignInOrReturnToIndex(onSuccessCallback) {
-    verifySignIn(() => {
-        if (onSuccessCallback) {
-            onSuccessCallback(player);
-        }
-    }, () => {
-        clearAndRedirectToIndex();
-    });
 }

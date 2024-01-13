@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>D.I.C.E L Mart</title>
 
-
 	<script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
 	<script src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
 	<script src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
@@ -14,22 +13,18 @@
 
 	<script src="/firebase/config.js"></script>
 	<script src="/firebase/firestore.js"></script>
-    <script src="/auth/verifyPlayer.js"></script>
-    <script src="/auth/signOut.js"></script>
-    <script>
-        verifySignInOrReturnToIndex((player) => {
-			document.querySelector("#player-name").innerHTML = player.name;
-			document.querySelector("#player-email").innerHTML = player.email;
-		});
-    </script>
+	<script src="/ui/general.js"></script>
+	<script src="/admin/ui/adminGeneral.js"></script>
+
+	<script src="/auth/verifyPlayer.js"></script>
+	<script src="/admin/verifyAdmin.js"></script>
+	<script>
+		verifyFirestoreAdmin();
+	</script>
 
 </head>
 
 <body>
-
-	<p id="player-name"></p>
-	<p id="player-email"></p>
-    <button id="sign-out-btn">Sign Out</button>
 
 </body>
 

@@ -1,6 +1,6 @@
 
 const firebaseUIConfig = {
-    signInSuccessUrl: '/',
+    signInSuccessUrl: '/login',
     signInOptions: [
         // Currently, only Google is supported. If more are required, uncomment the related lines and make sure Firebase is configured through their console.
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,

@@ -13,16 +13,28 @@
 		],
 		"rewrites": [
 			{
-				"source": "/admin/home",
-				"destination": "/admin/adminHome.html"
+				"source": "/",
+				"destination": "/index.html"
+			},
+			{
+				"source": "/login",
+				"destination": "/auth/login.html"
 			},
 			{
 				"source": "/admin",
+				"destination": "/admin/adminVerification.html"
+			},
+			{
+				"source": "/admin/home",
 				"destination": "/admin/admin.html"
 			},
 			{
+				"source": "/admin/adminManagement",
+				"destination": "/admin/adminManagement/adminManagement.html"
+			},
+			{
 				"source": "**",
-				"destination": "/redirect.html"
+				"destination": "/404.html"
 			}
 		]
 	}

@@ -41,7 +41,9 @@ function verifySignInThroughFirebase(user) {
         if (playerDoc.exists) {
             console.log(`Player Doc ${uid} exists.`);
             console.log(playerDoc.data());
-            return playerDoc.data();
+            let playerData = playerDoc.data();
+            playerData.id = uid;
+            return playerData;
         }
         console.log(`Player Doc ${uid} does not exist.`);
         return null;
@@ -57,6 +59,7 @@ function verifySignInThroughFirebase(user) {
 function createNewPlayerThroughFirebase(user) {
     console.log(`Creating a new player: ${user.uid}, ${user.displayName}, ${user.email}`);
     let playerData = {
+        id: user.uid,
         email: user.email,
         name: user.displayName,
     }
@@ -74,10 +77,10 @@ function createNewPlayerThroughFirebase(user) {
 
 function saveAndSignInToUser(user) {
     saveSignInToStorage(user);
-    window.location.href = "/player.html";
+    window.location.href = signedInURL;
 }
 
 function saveSignInToStorage(user) {
     // Do NOT save the uid or accessToken to localStorage
-    localStorage.setItem(localPlayerID, JSON.stringify(user));
+    localStorage.setItem(storagePlayerID, JSON.stringify(user));
 }

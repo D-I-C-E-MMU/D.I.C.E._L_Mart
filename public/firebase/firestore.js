@@ -3,9 +3,16 @@
 const firestoreDB = firebase.firestore();
 
 const playerDB = firestoreDB.collection("players");
-const localPlayerID = "firebase-local-player";
-const validPlayerKeys = ["email", "name"]
+const storagePlayerID = "firebase-local-player";
+const validPlayerKeys = ["id", "email", "name"]
 
 const adminDB = firestoreDB.collection("admins");
-const localAdminID = "firebase-local-admin";
-const validAdminKeys = ["rank"]
+const storageAdminID = "firebase-local-admin";
+const validAdminKeys = ["id"]
+
+
+
+function listHasAllElements(list, elements) {
+    const checker = (arr, target) => target.every(v => arr.includes(v));
+    return checker(list, elements);
+}

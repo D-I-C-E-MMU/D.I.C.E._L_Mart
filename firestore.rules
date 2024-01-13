@@ -16,15 +16,22 @@ service cloud.firestore {
 		// request.auth != null // means user must be logged in with Firebase's auth (Google Login)
 		// request.auth.uid == {docID} // means user (requester) can only access/edit their own assigned document
 
+		function isAdmin() {
+			return request.auth.uid != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+		}
+
 		match /players/{playerID} {
 			// User can only read and update their own data
 			allow get, update: if request.auth != null && request.auth.uid == playerID;
+			// User can only create their own data if they are logged in
 			allow create: if request.auth != null;
-			// allow read, write: if admin
+			// Admins can read and write all players
+			allow read, write: if isAdmin();
 		}
 
+		// Admins can read, write and delete all admins
 		match /admins/{adminID} {
-			allow get: if request.auth != null && request.auth.uid == adminID;
+			allow read, write, delete: if isAdmin();
 		}
     
 
