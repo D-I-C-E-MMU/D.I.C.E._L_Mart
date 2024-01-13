@@ -29,6 +29,7 @@ function initSignOutButtons() {
                 console.error(error);
             }).finally(() => {
                 window.location.href = signedOutURL;
+                window.location.reload();
             });
         });
     });

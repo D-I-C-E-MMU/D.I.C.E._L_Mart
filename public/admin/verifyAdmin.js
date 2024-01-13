@@ -24,7 +24,9 @@ function verifyAdminThroughFirebase(userUID) {
         if (adminDoc.exists) {
             console.log(`Admin Doc ${userUID} exists.`);
             console.log(adminDoc.data());
-            return adminDoc.data();
+            let adminData = adminDoc.data();
+            adminData.id = userUID;
+            return adminData;
         }
         console.log(`Admin Doc ${userUID} does not exist.`);
         return null;

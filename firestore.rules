@@ -17,8 +17,7 @@ service cloud.firestore {
 		// request.auth.uid == {docID} // means user (requester) can only access/edit their own assigned document
 
 		function isAdmin() {
-			if request.auth.uid != null return false;
-			return exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+			return request.auth.uid != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
 		}
 
 		match /players/{playerID} {
@@ -30,9 +29,9 @@ service cloud.firestore {
 			allow read, write: if isAdmin();
 		}
 
-		// Admins can read and write all admins
+		// Admins can read, write and delete all admins
 		match /admins/{adminID} {
-			allow read, write: if isAdmin();
+			allow read, write, delete: if isAdmin();
 		}
     
 

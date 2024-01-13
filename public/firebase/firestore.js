@@ -4,11 +4,11 @@ const firestoreDB = firebase.firestore();
 
 const playerDB = firestoreDB.collection("players");
 const storagePlayerID = "firebase-local-player";
-const validPlayerKeys = ["email", "name"]
+const validPlayerKeys = ["id", "email", "name"]
 
 const adminDB = firestoreDB.collection("admins");
 const storageAdminID = "firebase-local-admin";
-const validAdminKeys = []
+const validAdminKeys = ["id"]
 
 
 
