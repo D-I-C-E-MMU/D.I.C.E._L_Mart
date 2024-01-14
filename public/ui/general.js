@@ -49,6 +49,23 @@ function addOnPlayerUpdated(callback) {
     }
 }
 
+// Compoenent Loading
+async function injectComponentToNode(componentURL, node) {
+    const response = await fetch(componentURL);
+    const component = await response.text();
+    node.innerHTML = component;
+}
+
+// Scripts cannot be appended throught innerHTML! Thus is function is required
+async function injectScriptToNode(scriptURL, node) {
+    const response = await fetch(scriptURL);
+    const script = await response.text();
+    let scriptNode = document.createElement("script");
+    scriptNode.innerHTML = script;
+    node.appendChild(scriptNode);
+}
+// Compoenent Loading
+
 window.addEventListener('load', () => {
     initSignInButtons();
     initSignOutButtons();

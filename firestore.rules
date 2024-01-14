@@ -22,16 +22,37 @@ service cloud.firestore {
 
 		match /players/{playerID} {
 			// User can only read and update their own data
-			allow get, update: if request.auth != null && request.auth.uid == playerID;
+			allow get:
+				if request.auth != null &&
+				request.auth.uid == playerID;
 			// User can only create their own data if they are logged in
-			allow create: if request.auth != null;
-			// Admins can read and write all players
-			allow read, write: if isAdmin();
+			allow update, create:
+				if request.auth != null &&
+				request.resource.data.keys().hasAll(["name", "email"]);
+			
+			// Admins can do anything to all players
+			allow read, write:
+				if isAdmin();
 		}
 
-		// Admins can read, write and delete all admins
 		match /admins/{adminID} {
-			allow read, write, delete: if isAdmin();
+			// Admins can do anything to all admins
+			allow read, write:
+				if isAdmin();
+		}
+
+		match /playerCharacters/{playerCharacterID} {
+			// Players can only read their own data (owned from resource.data.playerID)
+			allow read:
+				if (request.auth != null && request.auth.uid == resource.data.playerID);
+			// Players can only create/update their own data (owned from resource.data.playerID)
+			allow create, update:
+				if (request.auth != null && request.auth.uid == resource.data.playerID) &&
+				request.resource.data.keys().hasAll(["playerID", "name", "level", "gold"]);
+			
+			// Admins can do anything to all playerCharacters
+			allow read, write:
+				if isAdmin();
 		}
     
 
