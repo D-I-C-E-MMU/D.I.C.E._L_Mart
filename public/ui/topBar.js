@@ -62,9 +62,16 @@ function setTopBarPlayerDetails(player) {
 }
 
 window.addEventListener("load", () => {
-    initTopBarLogo();
-
-    initTopBarAccount();
-
-    addOnPlayerUpdated(playerStateUpdated);
 });
+
+async function loadTopBar() {
+    const topBar = document.querySelector("#top-bar");
+    console.log("Top Bar");
+    await injectComponentToNode("/ui/topBar-component.html", topBar);
+
+    initTopBarLogo();
+    initTopBarAccount();
+    addOnPlayerUpdated(playerStateUpdated);
+}
+
+loadTopBar();
