@@ -59,13 +59,13 @@ function verifySignInThroughFirebase(user) {
 function createNewPlayerThroughFirebase(user) {
     console.log(`Creating a new player: ${user.uid}, ${user.displayName}, ${user.email}`);
     let playerData = {
-        id: user.uid,
         email: user.email,
         name: user.displayName,
     }
 
     return playerDB.doc(user.uid).set(playerData).then(() => {
         console.log("New player created");
+        playerData.id = user.uid;
         return playerData;
         
     }).catch((error) => {
