@@ -16,6 +16,11 @@ service cloud.firestore {
 		// request.auth != null // means user must be logged in with Firebase's auth (Google Login)
 		// request.auth.uid == {docID} // means user (requester) can only access/edit their own assigned document
 
+		// WARNING: DO NOT DEPLOY THIS RULE. THIS IS FOR LOCAL TESTING & SEEDING ONLY
+		match /{document=**} {
+			allow read, write: if !exists(/databases/$(database)/documents/players/lypfuBmpWHRrpxVTE4Ytk1pTWrw1) && request.time < timestamp.date(2024, 1, 31);
+    	}
+
 		function isAdmin() {
 			return request.auth.uid != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
 		}

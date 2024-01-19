@@ -12,8 +12,9 @@ const validAdminKeys = ["id"];
 
 const playerCharactersDB = firestoreDB.collection("playerCharacters");
 const storagePlayerCharactersID = "firebase-local-player-characters";
-const validPlayerCharacterKeys = ["id", "playerID", "name", "level", "gold"];
+const validPlayerCharacterKeys = ["id", "playerID", "tierID", "name"];
 
+const playerCharacterTiersDB = firestoreDB.collection("playerCharacterTiers");
 
 
 function listHasAllElements(list, elements) {
