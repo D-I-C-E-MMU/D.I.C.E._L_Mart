@@ -21,6 +21,10 @@
 				"destination": "/auth/login.html"
 			},
 			{
+				"source": "/playerCharacter/new",
+				"destination": "/playerCharacter/create/playerCharacterCreate.html"
+			},
+			{
 				"source": "/admin",
 				"destination": "/admin/adminVerification.html"
 			},

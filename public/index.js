@@ -5,6 +5,7 @@ async function loadPlayerCharacterComponent() {
     const mainContent = document.querySelector("#main-content");
     // Load in order
     await injectComponentToNode("/playerCharacter/playerCharacterList-component.html", mainContent);
+    await injectScriptToNode("/playerCharacter/ui/playerCharacterGeneral.js", mainContent);
     await injectScriptToNode("/playerCharacter/loadPlayerCharacters.js", mainContent);
     await injectScriptToNode("/playerCharacter/listPlayerCharacters.js", mainContent);
 }

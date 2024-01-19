@@ -20,15 +20,27 @@ service cloud.firestore {
 			return request.auth.uid != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
 		}
 
+		function timeWithin(time, durationSeconds) {
+			return request.time - time <= duration.value(durationSeconds, 's');
+		}
+
 		match /players/{playerID} {
+
+			function owned() {
+				return request.auth != null && request.auth.uid == playerID;
+			}
+
 			// User can only read and update their own data
 			allow get:
-				if request.auth != null &&
-				request.auth.uid == playerID;
+				if owned();
 			// User can only create their own data if they are logged in
-			allow update, create:
-				if request.auth != null &&
-				request.resource.data.keys().hasAll(["name", "email"]);
+			allow create:
+				if owned() &&
+				"name" in request.resource.data &&
+				"email" in request.resource.data &&
+				request.resource.data.keys().size() == 2;
+
+			// TODO Should player be able to update their own data?
 			
 			// Admins can do anything to all players
 			allow read, write:
@@ -42,17 +54,38 @@ service cloud.firestore {
 		}
 
 		match /playerCharacters/{playerCharacterID} {
+
+			// Returns if the player's authenticated uid is equal to the existing player character's playerID
+			function playerOwned() {
+				return request.auth != null && request.auth.uid == resource.data.playerID;
+			}
+
 			// Players can only read their own data (owned from resource.data.playerID)
 			allow read:
-				if (request.auth != null && request.auth.uid == resource.data.playerID);
+				if playerOwned();
+			
 			// Players can only create/update their own data (owned from resource.data.playerID)
-			allow create, update:
-				if (request.auth != null && request.auth.uid == resource.data.playerID) &&
-				request.resource.data.keys().hasAll(["playerID", "name", "level", "gold"]);
+			allow create:
+				if (request.auth != null && request.auth.uid == request.resource.data.playerID) && // Players' playerID must be equal to their auth uid
+				"playerID" in request.resource.data && // Players must have a playerID
+				"name" in request.resource.data && // Players must have a name
+				"tier" in request.resource.data && // Players must have a tier
+				"createdTimestamp" in request.resource.data && // Players must have a createdTimestamp
+				request.resource.data.keys().size() == 4 && // Players cannot have additional fields
+				timeWithin(request.resource.data.createdTimestamp, 300); // createdTimestamp must be within 5 minutes upon the server receiving it
+			
+			// TODO: Should players be able to update their character data?
+			//allow update:
+			//	if playerOwned() && // Players must own their own character
+			//	"updatedTimestamp" in request.resource.data && // updatedTimestamp must exist
+			//	timeWithin(request.resource.data.updatedTimestamp, 300) // updatedTimestamp must be within 5 minutes upon the server receiving it
 			
 			// Admins can do anything to all playerCharacters
 			allow read, write:
-				if isAdmin();
+				if isAdmin() &&
+				"updatedTimestamp" in request.resource.data && // updatedTimestamp must exist
+				timeWithin(request.resource.data.updatedTimestamp, 300) // updatedTimestamp must be within 5 minutes upon the server receiving it
+
 		}
     
 

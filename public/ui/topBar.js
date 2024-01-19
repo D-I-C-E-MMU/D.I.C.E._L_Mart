@@ -71,6 +71,8 @@ async function loadTopBar() {
 
     initTopBarLogo();
     initTopBarAccount();
+    // initSignInButtons();
+    // initSignOutButtons();
     addOnPlayerUpdated(playerStateUpdated);
 }
 

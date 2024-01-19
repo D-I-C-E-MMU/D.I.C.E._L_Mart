@@ -16,7 +16,6 @@ const validPlayerCharacterKeys = ["id", "playerID", "name", "level", "gold"];
 
 
 
-
 function listHasAllElements(list, elements) {
     const checker = (arr, target) => target.every(v => arr.includes(v));
     return checker(list, elements);
