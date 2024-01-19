@@ -44,11 +44,11 @@ function initCreatePCSubmitButton() {
 
 
 // Firestore Write Create
-function createNewPlayerCharacterThroughFirebase(name, tier) {
+function createNewPlayerCharacterThroughFirebase(name, tierID) {
     let characterData = {
         playerID: userUID,
+        tierID: tierID,
         name: name,
-        tier: tier,
         createdTimestamp: firebase.firestore.Timestamp.now(),
     }
 
