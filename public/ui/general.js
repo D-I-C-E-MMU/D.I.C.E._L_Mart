@@ -15,6 +15,7 @@ function signOutButtonClicked() {
     signOut().then(() => {
         // After firebase successfully logs out, clear local storage and redirect
         localStorage.clear();
+        sessionStorage.clear();
     }).catch((error) => {
         console.error(error);
     }).finally(() => {

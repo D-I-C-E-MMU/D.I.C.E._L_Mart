@@ -1,5 +1,5 @@
 
-const createPCURL = "/playerCharacter/new";
+const createPCURL = "/playerCharacters/new";
 
 function initCreatePCButtons() {
     const createPCButtons = document.querySelectorAll(".create-pc-btn");

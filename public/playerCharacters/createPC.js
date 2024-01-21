@@ -54,7 +54,7 @@ function createNewPlayerCharacterThroughFirebase(name, tierID) {
 
     return playerCharactersDB.add(characterData).then(() => {
         // Clear local storage so player characters are requested again
-        localStorage.removeItem(storagePlayerCharactersID);
+        sessionStorage.removeItem(storagePlayerCharactersID);
         return characterData;
     }).catch((error) => {
         console.error(error);

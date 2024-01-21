@@ -4,10 +4,10 @@ let runOnce = false;
 async function loadPlayerCharacterComponent() {
     const mainContent = document.querySelector("#main-content");
     // Load in order
-    await injectComponentToNode("/playerCharacter/playerCharacterList-component.html", mainContent);
-    await injectScriptToNode("/playerCharacter/ui/playerCharacterGeneral.js", mainContent);
-    await injectScriptToNode("/playerCharacter/loadPlayerCharacters.js", mainContent);
-    await injectScriptToNode("/playerCharacter/listPlayerCharacters.js", mainContent);
+    await injectComponentToNode("/playerCharacters/listPC-component.html", mainContent);
+    await injectScriptToNode("/playerCharacters/ui/pcGeneral.js", mainContent);
+    await injectScriptToNode("/playerCharacters/loadPC.js", mainContent);
+    await injectScriptToNode("/playerCharacters/listPC.js", mainContent);
 }
 
 addOnPlayerUpdated((player) => {

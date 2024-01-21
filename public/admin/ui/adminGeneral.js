@@ -1,6 +1,7 @@
 
 const adminHomeURL = "/admin/home"
-const adminManagementURL = "/admin/adminManagement"
+const adminManagementURL = "/admin/manage"
+const playerCharacterManagementURL = "admin/playerCharacters/manage"
 
 let onAdminUpdatedCallbacks = [];
 let onAdminUpdatedCallbackEmitted = false;

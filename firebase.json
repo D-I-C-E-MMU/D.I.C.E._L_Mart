@@ -21,8 +21,8 @@
 				"destination": "/auth/login.html"
 			},
 			{
-				"source": "/playerCharacter/new",
-				"destination": "/playerCharacter/create/playerCharacterCreate.html"
+				"source": "/playerCharacters/new",
+				"destination": "/playerCharacters/createPC.html"
 			},
 			{
 				"source": "/admin",
@@ -33,8 +33,12 @@
 				"destination": "/admin/admin.html"
 			},
 			{
-				"source": "/admin/adminManagement",
-				"destination": "/admin/adminManagement/adminManagement.html"
+				"source": "/admin/manage",
+				"destination": "/admin/admins/manageAdmins.html"
+			},
+			{
+				"source": "/admin/playerCharacters/manage",
+				"destination": "/admin/playerCharacters/managePC.html"
 			},
 			{
 				"source": "**",
