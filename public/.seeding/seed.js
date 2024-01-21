@@ -10,11 +10,15 @@ async function checkIfSeeded() {
     });
 }
 
-async function seedPlayers() {
+async function seedFinalRuleCheck() {
     return playersDB.doc("lypfuBmpWHRrpxVTE4Ytk1pTWrw1").set({
         "email": "ravenlimzhexuan1@gmail.com",
         "name": "Raven",
     });
+}
+
+async function seedPlayers() {
+
 }
 
 async function seedAdmins() {
@@ -58,6 +62,7 @@ window.addEventListener("load", async () => {
         seedPlayerCharacterTiers(),
     ];
     await Promise.all(seeds);
+    await seedFinalRuleCheck();
     console.log("Finished Seeding");
 
 });
