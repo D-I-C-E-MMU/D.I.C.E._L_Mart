@@ -35,12 +35,47 @@ function initCreatePCSubmitButton() {
             }
             // Returns home upon success
             window.location.href = homeURL;
-        })
+        });
 
 
     });
 }
 
+function initPlayerCharacterTiers() {
+    const pcTierSelect = document.querySelector("#pc-tier-select");
+
+    getPlayerCharacterTiersThroughFirebase().then((playerCharacterTiers) => {
+        if (!playerCharacterTiers) {
+            alert("Failed to retrieve player character tiers");
+            return;
+        }
+
+        playerCharacterTiers.forEach((playerCharacterTier) => {
+            let option = document.createElement("option");
+            option.value = playerCharacterTier.id;
+            option.innerHTML = playerCharacterTier.optionDescription;
+            pcTierSelect.appendChild(option);
+        });
+    });
+}
+
+
+// Firestore Read List
+function getPlayerCharacterTiersThroughFirebase() {
+    return playerCharacterTiersDB.get().then((playerCharacterTierDocs) => {
+        let playerCharacterTiers = [];
+        playerCharacterTierDocs.forEach((playerCharacterTierDoc) => {
+            let playerCharacterTierData = playerCharacterTierDoc.data();
+            playerCharacterTierData.id = playerCharacterTierDoc.id;
+            playerCharacterTiers.push(playerCharacterTierData);
+        });
+        return playerCharacterTiers;
+    }).catch((error) => {
+        console.error("Failed to retrieve player character tiers");
+        console.error(error);
+        return null;
+    });
+}
 
 
 // Firestore Write Create
@@ -57,12 +92,13 @@ function createNewPlayerCharacterThroughFirebase(name, tierID) {
         sessionStorage.removeItem(storagePlayerCharactersID);
         return characterData;
     }).catch((error) => {
-        console.error(error);
         console.error("Failed to create new player character");
+        console.error(error);
         return null;
-    })
+    });
 }
 
 window.addEventListener("load", () => {
     initCreatePCSubmitButton();
+    initPlayerCharacterTiers();
 });

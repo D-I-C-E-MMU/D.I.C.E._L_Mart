@@ -101,6 +101,16 @@ service cloud.firestore {
 				// timeWithin(request.resource.data.updatedTimestamp, 300) // updatedTimestamp must be within 5 minutes upon the server receiving it
 
 		}
+
+		match /playerCharacterTiers/{playerCharacterTierID} {
+
+			// Players are allowed to read all playerCharacterTiers for player creation
+			allow list;
+
+			// Admins can do anything to all playerCharacterTiers
+			allow read, write: if isAdmin();
+
+		}
     
 
   	}

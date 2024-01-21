@@ -28,7 +28,7 @@ function showPlayerCharacters(playerCharactersData) {
 
         // Tier
         let playerCharacterTier = document.createElement("p");
-        playerCharacterTier.innerHTML = playerCharacterData.tier;
+        playerCharacterTier.innerHTML = playerCharacterData.tierID;
         playerCharacterDiv.appendChild(playerCharacterTier);
 
         // Level

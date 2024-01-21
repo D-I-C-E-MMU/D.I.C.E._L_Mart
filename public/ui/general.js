@@ -17,6 +17,7 @@ function signOutButtonClicked() {
         localStorage.clear();
         sessionStorage.clear();
     }).catch((error) => {
+        console.error("Failed to sign out");
         console.error(error);
     }).finally(() => {
         window.location.href = signedOutURL;

@@ -30,7 +30,7 @@ initApp = function () {
             showLoginUI();
         }
     }, (error) => {
-        console.log("Error signing in");
+        console.error("Error signing in");
         console.error(error);
     });
 }

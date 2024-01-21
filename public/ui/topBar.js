@@ -2,7 +2,7 @@
 function initTopBarLogo() {
     const topBarLogo = document.querySelector("#top-bar-logo");
     topBarLogo.addEventListener("click", () => {
-        if (admin && adminHomeURL) {
+        if (typeof admin !== "undefined") {
             window.location.href = adminHomeURL;
             return;
         }
