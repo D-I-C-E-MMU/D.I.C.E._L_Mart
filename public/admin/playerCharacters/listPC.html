@@ -30,33 +30,48 @@
 	<div id="top-bar"></div>
 	<script src="/ui/topBar.js"></script>
 
-	<h1>D.I.C.E L Mart ADMIN Management</h1>
+	<h1>D.I.C.E L Mart ADMIN Player Characters</h1>
+
     
 	<div>
 		<div>
-			<h3>Admins</h3>
-			<table id="admins-table">
+			<h3>Player Characters (Pending Approval)</h3>
+			<table id="player-characters-approval-table">
 				<tr>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Remove Admin</th>
+                    <th>Player Name</th>
+					<th>Character Name</th>
+					<th>Tier</th>
+                    <th>Remarks</th>
 				</tr>
 			</table>
 		</div>
 		<div>
-			<h3>Players (non-Admins)</h3>
-			<table id="players-table">
+			<h3>Player Characters (Unowned)</h3>
+			<table id="player-characters-unowned-table">
 				<tr>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Add Admin</th>
+					<th>Character Name</th>
+                    <th>Level</th>
+                    <th>Gold</th>
+                    <th>Remarks</th>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<h3>Player Characters</h3>
+			<table id="player-characters-valid-table">
+				<tr>
+                    <th>Player Name</th>
+					<th>Character Name</th>
+                    <th>Level</th>
+                    <th>Gold</th>
+                    <th>Remarks</th>
 				</tr>
 			</table>
 		</div>
 	</div>
 
 	<link rel="stylesheet" href="/style.css">
-	<script src="/admin/admins/manageAdmins.js"></script>
+    <script src="/admin/playerCharacters/listPC.js"></script>
 
 </body>
 

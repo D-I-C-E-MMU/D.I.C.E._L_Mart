@@ -16,9 +16,9 @@ service cloud.firestore {
 		// request.auth != null // means user must be logged in with Firebase's auth (Google Login)
 		// request.auth.uid == {docID} // means user (requester) can only access/edit their own assigned document
 
-		// WARNING: DO NOT DEPLOY THIS RULE. THIS IS FOR LOCAL TESTING & SEEDING ONLY
+		// WARNING: DO NOT DEPLOY THIS RULE. THIS IS FOR SEEDING PURPOSES ONLY.
 		match /{document=**} {
-			allow read, write: if !exists(/databases/$(database)/documents/players/lypfuBmpWHRrpxVTE4Ytk1pTWrw1) && request.time < timestamp.date(2024, 1, 31);
+			allow write: if !exists(/databases/$(database)/documents/players/lypfuBmpWHRrpxVTE4Ytk1pTWrw1) && request.time < timestamp.date(2024, 1, 31);
     	}
 
 		function isAdmin() {
@@ -94,11 +94,11 @@ service cloud.firestore {
 
 			// Admins can do anything to all playerCharacters
 			allow read, write:
-				if isAdmin() &&
-				// Fields Check
-				"updatedTimestamp" in request.resource.data &&
-				// Values Check
-				timeWithin(request.resource.data.updatedTimestamp, 300) // updatedTimestamp must be within 5 minutes upon the server receiving it
+				if isAdmin(); //&&
+				// // Fields Check
+				// "updatedTimestamp" in request.resource.data &&
+				// // Values Check
+				// timeWithin(request.resource.data.updatedTimestamp, 300) // updatedTimestamp must be within 5 minutes upon the server receiving it
 
 		}
     

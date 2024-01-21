@@ -37,6 +37,10 @@
 				"destination": "/admin/admins/manageAdmins.html"
 			},
 			{
+				"source": "/admin/playerCharacters",
+				"destination": "/admin/playerCharacters/listPC.html"
+			},
+			{
 				"source": "/admin/playerCharacters/manage",
 				"destination": "/admin/playerCharacters/managePC.html"
 			},

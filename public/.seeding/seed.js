@@ -1,6 +1,6 @@
 
 async function checkIfSeeded() {
-    return adminDB.doc("lypfuBmpWHRrpxVTE4Ytk1pTWrw1").get().then((doc) => {
+    return adminsDB.doc("lypfuBmpWHRrpxVTE4Ytk1pTWrw1").get().then((doc) => {
         if (doc.exists) {
             return true;
         }
@@ -16,7 +16,7 @@ async function seedPlayers() {
 
 async function seedAdmins() {
     // ravenlimzhexuan1@gmail admin
-    await adminDB.doc("lypfuBmpWHRrpxVTE4Ytk1pTWrw1").set({});
+    await adminsDB.doc("lypfuBmpWHRrpxVTE4Ytk1pTWrw1").set({});
 }
 
 async function seedPlayerCharacters() {

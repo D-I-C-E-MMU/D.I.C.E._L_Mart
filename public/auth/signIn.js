@@ -36,7 +36,7 @@ function signIn(firebaseUser) {
 // Firestore Read Get
 function verifySignInThroughFirebase(user) {
     let uid = user.uid;
-    return playerDB.doc(uid).get().then((playerDoc) => {
+    return playersDB.doc(uid).get().then((playerDoc) => {
 
         if (playerDoc.exists) {
             console.log(`Player Doc ${uid} exists.`);
@@ -63,7 +63,7 @@ function createNewPlayerThroughFirebase(user) {
         name: user.displayName,
     }
 
-    return playerDB.doc(user.uid).set(playerData).then(() => {
+    return playersDB.doc(user.uid).set(playerData).then(() => {
         console.log("New player created");
         playerData.id = user.uid;
         return playerData;

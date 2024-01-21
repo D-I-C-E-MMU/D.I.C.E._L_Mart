@@ -1,7 +1,8 @@
 
 const adminHomeURL = "/admin/home"
 const adminManagementURL = "/admin/manage"
-const playerCharacterManagementURL = "admin/playerCharacters/manage"
+const playerCharacterURL = "/admin/playerCharacters"
+const playerCharacterManagementURL = "/admin/playerCharacters/manage"
 
 let onAdminUpdatedCallbacks = [];
 let onAdminUpdatedCallbackEmitted = false;
@@ -13,6 +14,26 @@ function initAdminManagement() {
             window.location.href = adminManagementURL;
         });
     });
+}
+
+function initPlayerCharacters() {
+    const playerCharacterBtn = document.querySelectorAll(".player-character-btn");
+    playerCharacterBtn.forEach((button) => {
+        button.addEventListener("click", () => {
+            window.location.href = playerCharacterURL;
+        });
+    });
+
+}
+
+function initPlayerCharacterManagement() {
+    const playerCharacterManagementBtn = document.querySelectorAll(".player-character-management-btn");
+    playerCharacterManagementBtn.forEach((button) => {
+        button.addEventListener("click", () => {
+            window.location.href = playerCharacterManagementURL;
+        });
+    });
+
 }
 
 function onAdminUpdated(admin) {
@@ -31,4 +52,6 @@ function addOnAdminUpdated(callback) {
 
 window.addEventListener('load', () => {
     initAdminManagement();
+    initPlayerCharacters();
+    initPlayerCharacterManagement();
 });

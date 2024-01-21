@@ -2,6 +2,10 @@
 function initTopBarLogo() {
     const topBarLogo = document.querySelector("#top-bar-logo");
     topBarLogo.addEventListener("click", () => {
+        if (admin && adminHomeURL) {
+            window.location.href = adminHomeURL;
+            return;
+        }
         window.location.href = homeURL;
     });
 }

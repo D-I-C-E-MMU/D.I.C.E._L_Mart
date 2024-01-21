@@ -48,7 +48,7 @@ function showTable(table, users, actionName, action) {
 
 // Firestore Read Get
 function getAllAdmins() {
-    return adminDB.get().then((adminDocs) => {
+    return adminsDB.get().then((adminDocs) => {
 
         let admins = {};
         adminDocs.forEach((adminDoc) => {
@@ -65,7 +65,7 @@ function getAllAdmins() {
 
 // Firestore Read Get
 function getAllPlayers() {
-    return playerDB.get().then((playerDocs) => {
+    return playersDB.get().then((playerDocs) => {
 
         let players = {};
         playerDocs.forEach((playerDoc) => {
@@ -82,7 +82,7 @@ function getAllPlayers() {
 
 // Firestore Delete
 function removeAdmin(adminID) {
-    adminDB.doc(adminID).delete().then(() => {
+    adminsDB.doc(adminID).delete().then(() => {
 
         if (adminID == admin.id) {
             localStorage.removeItem(storageAdminID);
@@ -96,9 +96,9 @@ function removeAdmin(adminID) {
     });
 }
 
-// Firestore Delete
+// Firestore Create
 function addAdmin(playerID) {
-    adminDB.doc(playerID).set({}).then(() => {
+    adminsDB.doc(playerID).set({}).then(() => {
         
         // Refresh
         window.location.reload();

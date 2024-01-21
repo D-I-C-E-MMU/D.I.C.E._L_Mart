@@ -19,7 +19,7 @@ function retrieveAdminFromStorage() {
 
 // Firestore Read Get
 function verifyAdminThroughFirebase(userUID) {
-    return adminDB.doc(userUID).get().then((adminDoc) => {
+    return adminsDB.doc(userUID).get().then((adminDoc) => {
 
         if (adminDoc.exists) {
             console.log(`Admin Doc ${userUID} exists.`);

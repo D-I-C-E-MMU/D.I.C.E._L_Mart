@@ -6,7 +6,6 @@ async function loadPlayerCharacterComponent() {
     // Load in order
     await injectComponentToNode("/playerCharacters/listPC-component.html", mainContent);
     await injectScriptToNode("/playerCharacters/ui/pcGeneral.js", mainContent);
-    await injectScriptToNode("/playerCharacters/loadPC.js", mainContent);
     await injectScriptToNode("/playerCharacters/listPC.js", mainContent);
 }
 
