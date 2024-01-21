@@ -11,7 +11,10 @@ async function checkIfSeeded() {
 }
 
 async function seedPlayers() {
-
+    return playersDB.doc("lypfuBmpWHRrpxVTE4Ytk1pTWrw1").set({
+        "email": "ravenlimzhexuan1@gmail.com",
+        "name": "Raven",
+    });
 }
 
 async function seedAdmins() {
@@ -52,7 +55,7 @@ window.addEventListener("load", async () => {
         seedPlayers(),
         seedAdmins(),
         seedPlayerCharacters(),
-        seedPlayerCharacterTiers()
+        seedPlayerCharacterTiers(),
     ];
     await Promise.all(seeds);
     console.log("Finished Seeding");
