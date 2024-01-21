@@ -7,6 +7,10 @@ const signedOutURL = "/";
 let onPlayerUpdatedCallbacks = [];
 let onPlayerUpdatedCallbackEmitted = false;
 
+function isAdmin() {
+    return typeof admin !== "undefined";
+}
+
 function signInButtonClicked() {
     window.location.href = signInURL;
 }

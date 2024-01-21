@@ -41,6 +41,10 @@
 				"destination": "/admin/playerCharacters/listPC.html"
 			},
 			{
+				"source": "/admin/playerCharacters/new",
+				"destination": "/admin/playerCharacters/createPC.html"
+			},
+			{
 				"source": "/admin/playerCharacters/manage",
 				"destination": "/admin/playerCharacters/managePC.html"
 			},
