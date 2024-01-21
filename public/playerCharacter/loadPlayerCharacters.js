@@ -2,7 +2,7 @@
 let playerCharacters = [];
 
 function retrievePlayerCharactersFromStorage() {
-    let playerCharactersStr = localStorage.getItem(storagePlayerCharactersID);
+    let playerCharactersStr = sessionStorage.getItem(storagePlayerCharactersID);
     if (!playerCharactersStr) {
         return null;
     }
@@ -21,7 +21,7 @@ function retrievePlayerCharactersFromStorage() {
             return playerCharactersData;
         }
         // Remove invalid data
-        localStorage.removeItem(storagePlayerCharactersID);
+        sessionStorage.removeItem(storagePlayerCharactersID);
     }
     return null;
 }
@@ -46,11 +46,12 @@ function retrievePlayerCharactersThroughFirebase(playerID) {
 }
 
 function savePlayerCharactersToStorage(playerCharactersData) {
-    localStorage.setItem(storagePlayerCharactersID, JSON.stringify(playerCharactersData));
+    sessionStorage.setItem(storagePlayerCharactersID, JSON.stringify(playerCharactersData));
 }
 
+// Player characters data are cached in the session storage
 function loadOwningPlayerCharacters(playerID, onSuccessCallback) {
-    // Local Storage
+    // Session Storage
     let playerCharactersData = retrievePlayerCharactersFromStorage();
     if (playerCharactersData) {
         playerCharacters = playerCharactersData;

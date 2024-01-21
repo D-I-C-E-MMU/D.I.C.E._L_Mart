@@ -11,7 +11,7 @@ const storageAdminID = "firebase-local-admin";
 const validAdminKeys = ["id"];
 
 const playerCharactersDB = firestoreDB.collection("playerCharacters");
-const storagePlayerCharactersID = "firebase-local-player-characters";
+const storagePlayerCharactersID = "firebase-local-player-characters"; // Session Storage
 const validPlayerCharacterKeys = ["id", "playerID", "tierID", "name"];
 
 const playerCharacterTiersDB = firestoreDB.collection("playerCharacterTiers");
