@@ -21,6 +21,32 @@ function initTopBarAccount() {
     
 }
 
+function initTopBarPlayerAdminSwitch() {
+    if (!localStorage.getItem(storageAdminID)) {
+        return;
+    }
+
+    const topBarPlayerAdminSwitchContainer = document.querySelector("#switch-player-admin");
+    topBarPlayerAdminSwitchContainer.hidden = false;
+
+    const switchPlayerAdminBtn = document.querySelector("#switch-player-admin-btn");
+    if (isAdmin()) {
+        switchPlayerAdminBtn.innerHTML = "Player Mode";
+    }
+    else {
+        switchPlayerAdminBtn.innerHTML = "Admin Console";
+    }
+    switchPlayerAdminBtn.addEventListener("click", () => {
+        if (isAdmin()) {
+            window.location.href = homeURL;
+        }
+        else {
+            window.location.href = "/admin";
+        }
+    });
+
+}
+
 function playerStateUpdated(player) {
     setTopBarPlayerDetails(player);
 
@@ -75,6 +101,7 @@ async function loadTopBar() {
 
     initTopBarLogo();
     initTopBarAccount();
+    initTopBarPlayerAdminSwitch();
     // initSignInButtons();
     // initSignOutButtons();
     addOnPlayerUpdated(playerStateUpdated);
