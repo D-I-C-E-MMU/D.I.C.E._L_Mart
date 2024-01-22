@@ -35,6 +35,12 @@
 
 	<div id="create-pc-content">
         <div>
+			<label for="pc-player-select">Assigning Player</label>
+			<select id="pc-player-select">
+				<option value="none" selected>Unowned (Assign Later)</option>
+			</select>
+		</div>
+        <div>
 			<label for="pc-name-input">Character Name</label>
 			<input type="text" id="pc-name-input" placeholder="Shadowheart Mommy">
 		</div>
@@ -54,7 +60,7 @@
 		</div>
         <div>
 			<label for="pc-created-timestamp-input">Created Date Time</label>
-			<input type="datetime-local" id="pc-created-timestamp-input">
+			<input type="datetime-local" id="pc-created-timestamp-input" value="2024-01-01T00:00">
 		</div>
 		<div>
 			<p id="create-pc-error-text" hidden>*Error</p>
@@ -65,7 +71,9 @@
 	</div>
 
 	<link rel="stylesheet" href="/style.css">
+	<!-- Load the same script useds for normal player character creation flow for players -->
     <script src="/playerCharacters/createPC.js"></script>
+    <script src="/admin/playerCharacters/createPC.js"></script>
 
 </body>
 

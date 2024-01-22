@@ -1,8 +1,9 @@
 
-// Players in this context refer to non admins
+let playerCharacterTiersQuerying = false;
+let playerCharacterTiers = null;
 
 function loadPlayerCharacters() {
-    getAllPlayerCharacters().then((playerCharacters) => {
+    getPlayerCharactersFirestore().then((playerCharacters) => {
 
         joinAndSegregatePlayerCharactersWithPlayer(playerCharacters).then((segregatedPlayerCharacters) => {
 
@@ -43,7 +44,7 @@ function showTable(table, playerCharacters, type) {
                 tableInserter(table, [
                     playerCharacter.player.name,
                     playerCharacter.name,
-                    playerCharacter.tierID,
+                    retrieveTierDescription(playerCharacter.tierID),
                     remarks,
                 ]);
                 break;
@@ -72,34 +73,36 @@ function showTable(table, playerCharacters, type) {
     });
 }
 
-function tableInserter(table, info) {
+function retrieveTierDescription(tierID) {
+    // Return Tier description if available
+    if (playerCharacterTiers) {
+        if (!playerCharacterTiers[tierID]) {
+            return tierID;
+        }
+        return playerCharacterTiers[tierID].optionDescription;  // TODO Change to custom description for admin display?
+    }
 
-    let row = table.insertRow();
+    // If is querying, skip
+    if (playerCharacterTiersQuerying) {
+        return tierID;
+    }
 
-    for (let i = 0; i < info.length; i++) {
-        let cell = row.insertCell(i);
-        cell.innerHTML = info[i];
-    };
-
-}
-
-// Firestore Read Get
-function getAllPlayerCharacters() {
-    return playerCharactersDB.get().then((playerCharacterDocs) => {
-
-        let playerCharacters = [];
-        playerCharacterDocs.forEach((playerCharacterDoc) => {
-            let playerCharacterData = playerCharacterDoc.data();
-            playerCharacterData.id = playerCharacterDoc.id;
-            playerCharacters.push(playerCharacterData);
+    // Make tier query
+    playerCharacterTiersQuerying = true;
+    getPlayerCharacterTiersFirestore().then((tiers) => {
+        playerCharacterTiers = {};
+        tiers.forEach((tier) => {
+            playerCharacterTiers[tier.id] = tier;
         });
-        return playerCharacters;
+        playerCharacterTiersQuerying = false;
 
-    }).catch((error) => {
-        console.error("Error getting player characters");
-        console.error(error);
-        return null;
+        let approvingTable = document.querySelector("#player-characters-approval-table");
+        for (let row of approvingTable.rows) {
+            row.cells[2].innerHTML = retrieveTierDescription(row.cells[2].innerHTML);
+        }
     });
+
+    return tierID;
 }
 
 function joinAndSegregatePlayerCharactersWithPlayer(playerCharacters) {

@@ -11,6 +11,22 @@ function isAdmin() {
     return typeof admin !== "undefined";
 }
 
+function listHasAllElements(list, elements) {
+    const checker = (arr, target) => target.every(v => arr.includes(v));
+    return checker(list, elements);
+}
+
+function tableInserter(table, info) {
+
+    let row = table.insertRow();
+
+    for (let i = 0; i < info.length; i++) {
+        let cell = row.insertCell(i);
+        cell.innerHTML = info[i];
+    };
+
+}
+
 function signInButtonClicked() {
     window.location.href = signInURL;
 }

@@ -17,25 +17,13 @@ function retrieveAdminFromStorage() {
     return null;
 }
 
-// Firestore Read Get
 function verifyAdminThroughFirebase(userUID) {
-    return adminsDB.doc(userUID).get().then((adminDoc) => {
-
-        if (adminDoc.exists) {
-            console.log(`Admin Doc ${userUID} exists.`);
-            console.log(adminDoc.data());
-            let adminData = adminDoc.data();
-            adminData.id = userUID;
-            return adminData;
+    return getAdminFirestore(userUID).then((admin) => {
+        if (admin) {
+            return admin;
         }
-        console.log(`Admin Doc ${userUID} does not exist.`);
         return null;
-
-    }).catch((error) => {
-        console.error(`Admin Doc ${userUID} failed to retrieve.`);
-        console.error(error);
-        return null;
-    });
+    })
 }
 
 function saveAdminToStorage(adminData) {

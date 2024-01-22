@@ -43,9 +43,16 @@ function initCreatePCSubmitButton() {
         }
         else {
 
+            const pcPlayerInput = document.querySelector("#pc-player-select");
             const pcLevelInput = document.querySelector("#pc-level-input");
             const pcGoldInput = document.querySelector("#pc-gold-input");
             const pcCreatedTimestampInput = document.querySelector("#pc-created-timestamp-input");
+
+            let pcPlayerID = pcPlayerInput.value;
+            console.log(pcPlayerID);
+            if (pcPlayerID == "none") {
+                pcPlayerID = null;
+            }
 
             let pcLevel = parseInt(pcLevelInput.value);
             console.log(pcLevel);
@@ -57,7 +64,7 @@ function initCreatePCSubmitButton() {
             console.log(pcCreateTimestamp);
 
             createCharacterData = {
-                playerID: userUID,
+                playerID: pcPlayerID,
                 tierID: pcTier,
                 name: pcName,
                 level: pcLevel,
@@ -67,11 +74,16 @@ function initCreatePCSubmitButton() {
             }
         }
 
-        createNewPlayerCharacterThroughFirebase(createCharacterData).then((characterData) => {
+        
+        createPlayerCharacterFirestore(createCharacterData).then((characterData) => {
             if (!characterData) {
                 alert("Failed to create Character!");
                 return;
             }
+
+            // Clear session storage so player characters are requested again
+            sessionStorage.removeItem(storagePlayerCharactersID);
+
             if (isAdmin()) {
                 // Returns to player characters list upon success
                 window.location.href = playerCharactersURL;
@@ -84,25 +96,10 @@ function initCreatePCSubmitButton() {
     });
 }
 
-// Firestore Write Create
-function createNewPlayerCharacterThroughFirebase(characterData) {
-
-    return playerCharactersDB.add(characterData).then(() => {
-        // Clear session storage so player characters are requested again
-        sessionStorage.removeItem(storagePlayerCharactersID);
-        return characterData;
-    }).catch((error) => {
-        console.error("Failed to create new player character");
-        console.error(error);
-        return null;
-    });
-
-}
-
 function initPlayerCharacterTiers() {
     const pcTierSelect = document.querySelector("#pc-tier-select");
 
-    getPlayerCharacterTiersThroughFirebase().then((playerCharacterTiers) => {
+    getPlayerCharacterTiersFirestore().then((playerCharacterTiers) => {
         if (!playerCharacterTiers) {
             alert("Failed to retrieve player character tiers");
             return;
@@ -117,22 +114,6 @@ function initPlayerCharacterTiers() {
     });
 }
 
-// Firestore Read List
-function getPlayerCharacterTiersThroughFirebase() {
-    return playerCharacterTiersDB.get().then((playerCharacterTierDocs) => {
-        let playerCharacterTiers = [];
-        playerCharacterTierDocs.forEach((playerCharacterTierDoc) => {
-            let playerCharacterTierData = playerCharacterTierDoc.data();
-            playerCharacterTierData.id = playerCharacterTierDoc.id;
-            playerCharacterTiers.push(playerCharacterTierData);
-        });
-        return playerCharacterTiers;
-    }).catch((error) => {
-        console.error("Failed to retrieve player character tiers");
-        console.error(error);
-        return null;
-    });
-}
 
 window.addEventListener("load", () => {
     initCreatePCSubmitButton();
