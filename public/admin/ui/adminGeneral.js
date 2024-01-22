@@ -3,6 +3,8 @@ const adminHomeURL = "/admin/home";
 const adminManagementURL = "/admin/manage";
 const playerCharactersURL = "/admin/playerCharacters";
 const createPlayerCharacterURL = "/admin/playerCharacters/new";
+const managePlayerCharacterURL = "/admin/playerCharacters/manage";
+const editPlayerCharacterURL = "/admin/playerCharacters/edit";
 
 let onAdminUpdatedCallbacks = [];
 let onAdminUpdatedCallbackEmitted = false;

@@ -45,6 +45,14 @@
 				"destination": "/admin/playerCharacters/createPC.html"
 			},
 			{
+				"source": "/admin/playerCharacters/manage/**",
+				"destination": "/admin/playerCharacters/managePC.html"
+			},
+			{
+				"source": "/admin/playerCharacters/edit/**",
+				"destination": "/admin/playerCharacters/editPC.html"
+			},
+			{
 				"source": "**",
 				"destination": "/404.html"
 			}

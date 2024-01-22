@@ -18,10 +18,10 @@ function listHasAllElements(list, elements) {
 
 function tableInserter(table, info) {
 
-    let row = table.insertRow();
+    let row = table.insertRow(-1);
 
     for (let i = 0; i < info.length; i++) {
-        let cell = row.insertCell(i);
+        let cell = row.insertCell(-1);
         cell.innerHTML = info[i];
     };
 

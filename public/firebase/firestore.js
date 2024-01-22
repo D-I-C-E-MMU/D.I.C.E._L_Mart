@@ -24,21 +24,29 @@ const playerCharacterTiersDB = firestoreDB.collection("playerCharacterTiers");
 
 // Firestore Read Get
 function getAdminFirestore(adminID) {
+
     return adminsDB.doc(adminID).get().then((adminDoc) => {
 
-        let adminData = adminDoc.data();
-        adminData.id = adminDoc.id;
-        return adminData;
+        if (adminDoc.exists) {
+            let adminData = adminDoc.data();
+            adminData.id = adminDoc.id;
+            return adminData;
+        }
+
+        console.warn(`Admin Doc ${adminID} does not exist.`);
+        return null;
 
     }).catch((error) => {
         console.error(`Admin Doc ${userUID} failed to retrieve.`);
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Read List
 function getAdminsFirestore() {
+
     return adminsDB.get().then((adminDocs) => {
 
         let admins = [];
@@ -56,6 +64,7 @@ function getAdminsFirestore() {
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Write Create
@@ -65,6 +74,7 @@ function createAdminFirestore(adminID) {
 
     return adminsDB.doc(adminID).set(adminData).then((adminDoc) => {
 
+        adminData = adminDoc.data();
         adminData.id = adminDoc.id;
         return adminData;
 
@@ -73,10 +83,12 @@ function createAdminFirestore(adminID) {
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Write Delete
 function deleteAdminFirestore(adminID) {
+
     return adminsDB.doc(adminID).delete().then(() => {
 
         let adminData = {
@@ -89,25 +101,34 @@ function deleteAdminFirestore(adminID) {
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Read Get
 function getPlayerFirestore(playerID) {
+
     return playersDB.doc(playerID).get().then((playerDoc) => {
 
-        let playerData = playerDoc.data();
-        playerData.id = playerDoc.id;
-        return playerData;
+        if (playerDoc.exists) {
+            let playerData = playerDoc.data();
+            playerData.id = playerDoc.id;
+            return playerData;
+        }
+        
+        console.warn(`Player Doc ${playerID} does not exist.`);
+        return null;
 
     }).catch((error) => {
         console.error(`Player Doc ${playerID} failed to retrieve.`);
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Read List
 function getPlayersFirestore() {
+
     return playersDB.get().then((playerDocs) => {
 
         let players = [];
@@ -125,6 +146,7 @@ function getPlayersFirestore() {
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Write Create
@@ -132,33 +154,46 @@ function createPlayerFirstore(playerID, playerData) {
 
     return playersDB.doc(playerID).set(playerData).then((playerDoc) => {
 
+        playerData = playerDoc.data();
         playerData.id = playerDoc.id;
         return playerData;
+
+        return null;
 
     }).catch((error) => {
         console.error(`Player Doc ${playerData} failed to create.`);
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Read Get
 function getPlayerCharacterFirestore(playerCharacterID) {
+
     return playerCharactersDB.doc(playerCharacterID).get().then((playerCharacterDoc) => {
 
-        let playerCharacterData = playerCharacterDoc.data();
-        playerCharacterData.id = playerCharacterDoc.id;
-        return playerCharacterData;
+        if (playerCharacterDoc.exists) {
+            let playerCharacterData = playerCharacterDoc.data();
+            playerCharacterData.id = playerCharacterDoc.id;
+            return playerCharacterData;
+        }
+
+        console.warn(`Player Character Doc ${playerCharacterID} does not exist.`);
+        return null;
+
 
     }).catch((error) => {
         console.error(`Player Character Doc ${playerCharacterID} failed to retrieve.`);
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Read List
 function getPlayerCharactersFirestore() {
+
     return playerCharactersDB.get().then((playerCharacterDocs) => {
 
         let playerCharacters = [];
@@ -176,10 +211,12 @@ function getPlayerCharactersFirestore() {
         console.error(error);
         return null;
     });
+
 }
 
-// Firestore Read List Conditional
+// Firestore Read List Where
 function getPlayerOwnedPlayerCharactersFirestore(playerID) {
+
     return playerCharactersDB.where("playerID", "==", playerID).get().then((playerCharacterDocs) => {
 
         let playerCharactersData = [];
@@ -195,6 +232,7 @@ function getPlayerOwnedPlayerCharactersFirestore(playerID) {
         console.error(error);
         return null;
     });
+
 }
 
 // Firestore Write Create
@@ -202,6 +240,7 @@ function createPlayerCharacterFirestore(playerCharacterData) {
 
     return playerCharactersDB.add(playerCharacterData).then((playerCharacterDoc) => {
 
+        playerCharacterData = playerCharacterDoc.data();
         playerCharacterData.id = playerCharacterDoc.id;
         return playerCharacterData;
 
@@ -210,10 +249,33 @@ function createPlayerCharacterFirestore(playerCharacterData) {
         console.error(error);
         return null;
     });
+
+}
+
+// Firestore Write Update
+function updatePlayerCharacterFirestore(playerCharacterID, playerCharacterData) {
+
+    if (playerCharacterData.id) {
+        delete playerCharacterData.id;
+    }
+
+    return playerCharactersDB.doc(playerCharacterID).update(playerCharacterData).then((playerCharacterDoc) => {
+
+        playerCharacterData = playerCharacterDoc.data();
+        playerCharacterData.id = playerCharacterID;
+        return playerCharacterData;
+
+    }).catch((error) => {
+        console.error(`Player Character Doc ${playerCharacterID} failed to update.`);
+        console.error(error);
+        return null;
+    });
+
 }
 
 // Firestore Read List
 function getPlayerCharacterTiersFirestore() {
+
     return playerCharacterTiersDB.get().then((playerCharacterTierDocs) => {
 
         let playerCharacterTiers = [];
@@ -231,4 +293,5 @@ function getPlayerCharacterTiersFirestore() {
         console.error(error);
         return null;
     });
+
 }

@@ -31,10 +31,10 @@ function loadAdminsAndPlayers() {
 
 function showTable(table, users, actionName, action) {
     for (let userID in users) {
-        let row = table.insertRow();
-        let nameCell = row.insertCell(0);
-        let emailCell = row.insertCell(1);
-        let actionCell = row.insertCell(2);
+        let row = table.insertRow(-1);
+        let nameCell = row.insertCell(-1);
+        let emailCell = row.insertCell(-1);
+        let actionCell = row.insertCell(-1);
         nameCell.innerHTML = users[userID].name;
         emailCell.innerHTML = users[userID].email;
         let actionButton = document.createElement("button");
