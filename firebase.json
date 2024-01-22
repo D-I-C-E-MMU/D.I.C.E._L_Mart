@@ -45,10 +45,6 @@
 				"destination": "/admin/playerCharacters/createPC.html"
 			},
 			{
-				"source": "/admin/playerCharacters/manage",
-				"destination": "/admin/playerCharacters/managePC.html"
-			},
-			{
 				"source": "**",
 				"destination": "/404.html"
 			}

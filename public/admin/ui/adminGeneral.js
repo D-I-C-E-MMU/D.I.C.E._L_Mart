@@ -3,7 +3,6 @@ const adminHomeURL = "/admin/home";
 const adminManagementURL = "/admin/manage";
 const playerCharactersURL = "/admin/playerCharacters";
 const createPlayerCharacterURL = "/admin/playerCharacters/new";
-const playerCharacterManagementURL = "/admin/playerCharacters/manage";
 
 let onAdminUpdatedCallbacks = [];
 let onAdminUpdatedCallbackEmitted = false;
@@ -36,16 +35,6 @@ function initCreatePlayerCharacter() {
     });
 }
 
-function initPlayerCharacterManagement() {
-    const playerCharacterManagementBtn = document.querySelectorAll(".player-character-management-btn");
-    playerCharacterManagementBtn.forEach((button) => {
-        button.addEventListener("click", () => {
-            window.location.href = playerCharacterManagementURL;
-        });
-    });
-
-}
-
 function onAdminUpdated(admin) {
     onAdminUpdatedCallbackEmitted = true;
     onAdminUpdatedCallbacks.forEach((callback) => {
@@ -64,5 +53,4 @@ window.addEventListener('load', () => {
     initAdminManagement();
     initPlayerCharacters();
     initCreatePlayerCharacter();
-    initPlayerCharacterManagement();
 });

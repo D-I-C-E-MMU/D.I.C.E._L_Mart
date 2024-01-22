@@ -1,12 +1,12 @@
 
 function initTopBarLogo() {
     const topBarLogo = document.querySelector("#top-bar-logo");
+    if (isAdmin()) {
+        const topBarLogoText = document.querySelector("#top-bar-log-text");
+        topBarLogoText.innerHTML += " Admin";
+    }
     topBarLogo.addEventListener("click", () => {
-        if (typeof admin !== "undefined") {
-            window.location.href = adminHomeURL;
-            return;
-        }
-        window.location.href = homeURL;
+        window.location.href = isAdmin() ? adminHomeURL : homeURL;
     });
 }
 
@@ -30,19 +30,9 @@ function initTopBarPlayerAdminSwitch() {
     topBarPlayerAdminSwitchContainer.hidden = false;
 
     const switchPlayerAdminBtn = document.querySelector("#switch-player-admin-btn");
-    if (isAdmin()) {
-        switchPlayerAdminBtn.innerHTML = "Player Mode";
-    }
-    else {
-        switchPlayerAdminBtn.innerHTML = "Admin Console";
-    }
+    switchPlayerAdminBtn.innerHTML = isAdmin() ? "Player Console" : "Admin Console";
     switchPlayerAdminBtn.addEventListener("click", () => {
-        if (isAdmin()) {
-            window.location.href = homeURL;
-        }
-        else {
-            window.location.href = "/admin";
-        }
+        window.location.href = isAdmin() ? homeURL : "/admin";
     });
 
 }
@@ -91,12 +81,8 @@ function setTopBarPlayerDetails(player) {
     }
 }
 
-window.addEventListener("load", () => {
-});
-
 async function loadTopBar() {
     const topBar = document.querySelector("#top-bar");
-    console.log("Top Bar");
     await injectComponentToNode("/ui/topBar-component.html", topBar);
 
     initTopBarLogo();
