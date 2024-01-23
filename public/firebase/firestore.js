@@ -74,7 +74,6 @@ function createAdminFirestore(adminID) {
 
     return adminsDB.doc(adminID).set(adminData).then((adminDoc) => {
 
-        adminData = adminDoc.data();
         adminData.id = adminDoc.id;
         return adminData;
 
@@ -154,11 +153,8 @@ function createPlayerFirstore(playerID, playerData) {
 
     return playersDB.doc(playerID).set(playerData).then((playerDoc) => {
 
-        playerData = playerDoc.data();
         playerData.id = playerDoc.id;
         return playerData;
-
-        return null;
 
     }).catch((error) => {
         console.error(`Player Doc ${playerData} failed to create.`);
@@ -240,7 +236,6 @@ function createPlayerCharacterFirestore(playerCharacterData) {
 
     return playerCharactersDB.add(playerCharacterData).then((playerCharacterDoc) => {
 
-        playerCharacterData = playerCharacterDoc.data();
         playerCharacterData.id = playerCharacterDoc.id;
         return playerCharacterData;
 
@@ -261,7 +256,6 @@ function updatePlayerCharacterFirestore(playerCharacterID, playerCharacterData) 
 
     return playerCharactersDB.doc(playerCharacterID).update(playerCharacterData).then((playerCharacterDoc) => {
 
-        playerCharacterData = playerCharacterDoc.data();
         playerCharacterData.id = playerCharacterID;
         return playerCharacterData;
 

@@ -47,49 +47,49 @@ function showPlayerCharacters(playerCharactersData) {
 }
 
 
-function retrievePlayerCharactersFromStorage() {
-    let playerCharactersStr = sessionStorage.getItem(storagePlayerCharactersID);
-    if (!playerCharactersStr) {
-        return null;
-    }
-    let playerCharactersData = JSON.parse(playerCharactersStr);
-    if (playerCharactersData) {
-        let allValid = true;
-        // Check all player characters data
-        for (let playerCharacterData of playerCharactersData) {
-            if (!listHasAllElements(Object.keys(playerCharacterData), validPlayerCharacterKeys)) {
-                allValid = false;
-                break;
-            }
-        };
-        // If all valid, return characters data
-        if (allValid) {
-            return playerCharactersData;
-        }
-        // Remove invalid data
-        sessionStorage.removeItem(storagePlayerCharactersID);
-    }
-    return null;
-}
+// function retrievePlayerCharactersFromStorage() {
+//     let playerCharactersStr = sessionStorage.getItem(storagePlayerCharactersID);
+//     if (!playerCharactersStr) {
+//         return null;
+//     }
+//     let playerCharactersData = JSON.parse(playerCharactersStr);
+//     if (playerCharactersData) {
+//         let allValid = true;
+//         // Check all player characters data
+//         for (let playerCharacterData of playerCharactersData) {
+//             if (!listHasAllElements(Object.keys(playerCharacterData), validPlayerCharacterKeys)) {
+//                 allValid = false;
+//                 break;
+//             }
+//         };
+//         // If all valid, return characters data
+//         if (allValid) {
+//             return playerCharactersData;
+//         }
+//         // Remove invalid data
+//         sessionStorage.removeItem(storagePlayerCharactersID);
+//     }
+//     return null;
+// }
 
-function savePlayerCharactersToStorage(playerCharactersData) {
-    sessionStorage.setItem(storagePlayerCharactersID, JSON.stringify(playerCharactersData));
-}
+// function savePlayerCharactersToStorage(playerCharactersData) {
+//     sessionStorage.setItem(storagePlayerCharactersID, JSON.stringify(playerCharactersData));
+// }
 
 // Player characters data are cached in the session storage
 function loadOwningPlayerCharacters(playerID, onSuccessCallback) {
     // Session Storage
-    let playerCharactersData = retrievePlayerCharactersFromStorage();
-    if (playerCharactersData) {
-        playerCharacters = playerCharactersData;
-        if (onSuccessCallback) onSuccessCallback(playerCharactersData);
-        return;
-    }
+    // let playerCharactersData = retrievePlayerCharactersFromStorage();
+    // if (playerCharactersData) {
+    //     playerCharacters = playerCharactersData;
+    //     if (onSuccessCallback) onSuccessCallback(playerCharactersData);
+    //     return;
+    // }
     
     getPlayerOwnedPlayerCharactersFirestore(playerID).then((playerCharactersData) => {
         if (playerCharactersData) {
             playerCharacters = playerCharactersData;
-            savePlayerCharactersToStorage(playerCharactersData);
+            // savePlayerCharactersToStorage(playerCharactersData);
             if (onSuccessCallback) onSuccessCallback(playerCharactersData);
         }
     });

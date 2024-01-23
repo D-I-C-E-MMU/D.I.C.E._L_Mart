@@ -82,7 +82,7 @@ function initCreatePCSubmitButton() {
             }
 
             // Clear session storage so player characters are requested again
-            sessionStorage.removeItem(storagePlayerCharactersID);
+            // sessionStorage.removeItem(storagePlayerCharactersID);
 
             if (isAdmin()) {
                 // Returns to player characters list upon success
