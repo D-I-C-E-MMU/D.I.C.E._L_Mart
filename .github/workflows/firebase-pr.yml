@@ -9,13 +9,13 @@ jobs:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}'
-          projectId: dice-staging # TODO Change to prod projectID
+          projectId: dice-staging
   deploy-firestore-rules:
     name: Deploy Firestore Rules
     runs-on: ubuntu-latest
