@@ -48,6 +48,7 @@ function verifySignIn(onCompleted) {
         onPlayerUpdated(player);
         if (onCompleted) onCompleted(player);
     }, (error) => {
+        console.error("Failed to verify sign in through Google Firebase");
         console.error(error);
         clear();
         onPlayerUpdated(player);

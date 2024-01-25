@@ -13,14 +13,14 @@ function signIn(firebaseUser) {
             providerData: firebaseUser.providerData
         }
     }).then(() => {
-        verifySignInThroughFirebase(user).then((playerData) => {
+        getPlayerFirestore(user.uid).then((playerData) => {
             if (playerData) {
                 console.log("Gonna login with playerData")
                 saveAndSignInToUser(playerData);
             }
             else {
                 console.log("no player data to login with");
-                createNewPlayerThroughFirebase(user).then((playerData) => {
+                createNewPlayer(user.uid, user).then((playerData) => {
                     if (playerData) {
                         saveAndSignInToUser(playerData);
                     }
@@ -33,46 +33,14 @@ function signIn(firebaseUser) {
     });
 }
 
-// Firestore Read Get
-function verifySignInThroughFirebase(user) {
-    let uid = user.uid;
-    return playerDB.doc(uid).get().then((playerDoc) => {
-
-        if (playerDoc.exists) {
-            console.log(`Player Doc ${uid} exists.`);
-            console.log(playerDoc.data());
-            let playerData = playerDoc.data();
-            playerData.id = uid;
-            return playerData;
-        }
-        console.log(`Player Doc ${uid} does not exist.`);
-        return null;
-
-    }).catch((error) => {
-        console.error(`Player Doc ${uid} failed to retrieve.`);
-        console.error(error);
-        return null;
-    });
-}
-
-// Firestore Write Create
-function createNewPlayerThroughFirebase(user) {
+function createNewPlayer(user) {
     console.log(`Creating a new player: ${user.uid}, ${user.displayName}, ${user.email}`);
     let playerData = {
-        id: user.uid,
         email: user.email,
         name: user.displayName,
     }
 
-    return playerDB.doc(user.uid).set(playerData).then(() => {
-        console.log("New player created");
-        return playerData;
-        
-    }).catch((error) => {
-        console.error(error);
-        console.error("Failed to create new player");
-        return null;
-    });
+    return createPlayerFirstore(playerData);
 }
 
 function saveAndSignInToUser(user) {

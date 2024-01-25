@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>D.I.C.E L Mart</title>
+
+	<script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
+	<script src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
+	<script src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
+	<script src="/__/firebase/init.js?useEmulator=true"></script>
+
+	<script src="/firebase/config.js"></script>
+	<script src="/firebase/firestore.js"></script>
+	<script src="/ui/general.js"></script>
+	<script src="/admin/ui/adminGeneral.js"></script>
+
+	<script src="/auth/verifyPlayer.js"></script>
+	<script src="/admin/verifyAdmin.js"></script>
+	<script src="/auth/signOut.js"></script>
+	<script>
+		verifyLocalAdmin();
+	</script>
+
+</head>
+
+<body>
+
+	<div id="top-bar"></div>
+	<script src="/ui/topBar.js"></script>
+
+	<h1>D.I.C.E L Mart ADMIN Player Character Management</h1>
+
+
+	<div id="pc-container">
+		<div>
+			<label for="pc-name-input">Character Name</label>
+			<input type="text" id="pc-name-input" placeholder="Shadowheart Mommy">
+		</div>
+		<div>
+			<label for="pc-player-select">Owning Player</label>
+			<select id="pc-player-select">
+				<option value="none">None</option>
+			</select>
+		</div>
+		<div>
+			<label for="pc-tier-input">Tier (When the Character is created)</label>
+			<select id="pc-tier-select">
+				<option value="none">None</option>
+			</select>
+
+			<div>
+				<button id="pc-tier-apply-btn">Apply Tier Bonuses</button>
+			</div>
+		</div>
+        <div>
+			<label for="pc-level-input">Current Level</label>
+			<input type="number" id="pc-level-input" min="0" step="1">
+		</div>
+        <div>
+			<label for="pc-gold-input">Current Gold</label>
+			<input type="number" id="pc-gold-input">
+		</div>
+        <div>
+			<label for="pc-created-timestamp-input">Created Date Time</label>
+			<input type="datetime-local" id="pc-created-timestamp-input">
+		</div>
+		<div>
+			<label for="pc-approved-input">Approved</label>
+			<input type="checkbox" id="pc-approved-input">
+		</div>
+		<div>
+			<p id="edit-pc-error-text" hidden>*Error</p>
+		</div>
+		<div>
+			<button id="edit-pc-submit-btn">Confirm Changes</button>
+		</div>
+	</div>
+
+
+	<link rel="stylesheet" href="/style.css">
+	<!-- Load the same script used for player character creation for admins -->
+    <script src="/playerCharacters/createPC.js"></script>
+	<script src="/admin/playerCharacters/editPC.js"></script>
+</body>
+
+</html>

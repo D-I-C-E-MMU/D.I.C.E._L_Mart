@@ -9,27 +9,18 @@
 	<script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
 	<script src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
 	<script src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
-
-	<!-- <script defer src="/__/firebase/10.7.1/firebase-database-compat.js"></script>
-	<script defer src="/__/firebase/10.7.1/firebase-functions-compat.js"></script>
-	<script defer src="/__/firebase/10.7.1/firebase-messaging-compat.js"></script>
-	<script defer src="/__/firebase/10.7.1/firebase-storage-compat.js"></script>
-	<script defer src="/__/firebase/10.7.1/firebase-analytics-compat.js"></script>
-	<script defer src="/__/firebase/10.7.1/firebase-remote-config-compat.js"></script> -->
-	<!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
 	<script src="/__/firebase/init.js?useEmulator=true"></script>
 
 	<script src="/firebase/config.js"></script>
 	<script src="/firebase/firestore.js"></script>
 	<script src="/ui/general.js"></script>
+	<script src="/admin/ui/adminGeneral.js"></script>
 
 	<script src="/auth/verifyPlayer.js"></script>
+	<script src="/admin/verifyAdmin.js"></script>
 	<script src="/auth/signOut.js"></script>
 	<script>
-		verifySignIn();
+		verifyLocalAdmin();
 	</script>
 
 </head>
@@ -39,16 +30,33 @@
 	<div id="top-bar"></div>
 	<script src="/ui/topBar.js"></script>
 
-	<h1>D.I.C.E L Mart</h1>
-
-	<div id="main-content">
-
+	<h1>D.I.C.E L Mart ADMIN Management</h1>
+    
+	<div>
+		<div>
+			<h3>Admins</h3>
+			<table id="admins-table">
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Remove Admin</th>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<h3>Players (non-Admins)</h3>
+			<table id="players-table">
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Add Admin</th>
+				</tr>
+			</table>
+		</div>
 	</div>
 
 	<link rel="stylesheet" href="/style.css">
-	<script src="/index.js"></script>
-
-	<script src="/.seeding/seed.js"></script>
+	<script src="/admin/admins/manageAdmins.js"></script>
 
 </body>
 
