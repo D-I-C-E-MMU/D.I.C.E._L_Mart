@@ -16,13 +16,14 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}'
+      - run: firebase use default
       - name: Deploy to Firebase
         uses: joinflux/firebase-tools@v9.16.0
         with:
           args: deploy --only firestore:rules
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}
-      - run: firebase use default && firebase deploy
+      - run: firebase deploy
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
