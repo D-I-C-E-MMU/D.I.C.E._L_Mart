@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
-    "build": "npm install && firebase deploy",
+    "build": "npm install firebase && firebase deploy",
     "test": "echo \"Warning: no test specified\" && exit 1"
   },
   "repository": {
