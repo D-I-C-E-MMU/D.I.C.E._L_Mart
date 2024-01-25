@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/DICE-MMU/D.I.C.E._L_Mart#readme",
   "dependencies": {
-    "firebase": "^10.7.2"
+    "firebase-tools": "^13.1.0"
   }
 }
