@@ -16,19 +16,8 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}'
-      - name: Use Firebase DICE-STAGING
-        uses: joinflux/firebase-tools@v9.16.0
-        with:
-          args: use dice-staging
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}
-      - name: Deploy to Firebase
-        uses: joinflux/firebase-tools@v9.16.0
-        with:
-          args: deploy --only firestore:rules
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}
-      - run: firebase deploy
+      - run: firebase use default
+      - run: firebase deploy --only firestore:rules
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
