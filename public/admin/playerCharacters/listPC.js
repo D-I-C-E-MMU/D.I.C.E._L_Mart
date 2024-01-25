@@ -38,7 +38,6 @@ function showTable(table, playerCharacters, type) {
             remarks = playerCharacter.additionalRemarks;
         }
 
-        let manageIndex = 0;
         let editIndex = 0;
         switch (type) {
             case 0:
@@ -49,8 +48,7 @@ function showTable(table, playerCharacters, type) {
                     retrieveTierDescription(playerCharacter.tierID),
                     remarks,
                 ]);
-                manageIndex = 4;
-                editIndex = 5;
+                editIndex = 4;
                 break;
 
             case 1:
@@ -61,8 +59,7 @@ function showTable(table, playerCharacters, type) {
                     playerCharacter.gold,
                     remarks,
                 ]);
-                manageIndex = 4;
-                editIndex = 5;
+                editIndex = 4;
                 break;
 
             case 2:
@@ -74,20 +71,11 @@ function showTable(table, playerCharacters, type) {
                     playerCharacter.gold,
                     remarks,
                 ]);
-                manageIndex = 5;
-                editIndex = 6;
+                editIndex = 5;
                 break;
         }
 
         let row = table.rows[table.rows.length - 1];
-
-        let manageCell = row.insertCell(-1);
-        let manageBtn = document.createElement("button");
-        manageBtn.innerHTML = "Manage";
-        manageBtn.addEventListener("click", () => {
-            window.location.href = `${managePlayerCharacterURL}/${playerCharacter.id}`;
-        });
-        manageCell.appendChild(manageBtn);
 
         let editCell = row.insertCell(-1);
         let editBtn = document.createElement("button");
@@ -169,6 +157,9 @@ function joinAndSegregatePlayerCharactersWithPlayer(playerCharacters) {
         else {
             if (!playerCharacter.approved) {
                 playerCharacter.additionalRemarks = "Unowned and Unapproved!";
+                playerCharacter.player = {
+                    name: "Unowned",
+                }
                 approvingPlayerCharacters.push(playerCharacter);
             }
             else {
