@@ -15,4 +15,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}'
           projectId: dice-staging # TODO Change to prod projectID
+      - run: npm install -g firebase
       - run: firebase deploy --only firestore:rules --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}
