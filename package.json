@@ -17,8 +17,5 @@
   "bugs": {
     "url": "https://github.com/DICE-MMU/D.I.C.E._L_Mart/issues"
   },
-  "homepage": "https://github.com/DICE-MMU/D.I.C.E._L_Mart#readme",
-  "dependencies": {
-    "firebase-tools": "^13.1.0"
-  }
+  "homepage": "https://github.com/DICE-MMU/D.I.C.E._L_Mart#readme"
 }
