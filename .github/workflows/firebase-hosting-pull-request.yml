@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo ${{secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING}} | sed 's/./& /g'
       - run: npm ci && npm run build
       - run: npm install -g firebase-tools
       - id: 'auth'
