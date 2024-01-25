@@ -19,7 +19,7 @@ jobs:
       - name: Use Firebase DICE-STAGING
         uses: joinflux/firebase-tools@v9.16.0
         with:
-          args: use default
+          args: use dice-staging
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_STAGING }}
       - name: Deploy to Firebase
