@@ -11,10 +11,12 @@ const storageAdminID = "firebase-local-admin";
 const validAdminKeys = ["id"];
 
 const playerCharactersDB = firestoreDB.collection("playerCharacters");
-const storagePlayerCharactersID = "firebase-local-player-characters"; // Session Storage
+const storagePlayerCharactersID = "firebase-local-player-characters"; // Session Storage // NOT USED
 const validPlayerCharacterKeys = ["id", "playerID", "tierID", "name"];
 
 const playerCharacterTiersDB = firestoreDB.collection("playerCharacterTiers");
+
+const logSheetsDB = firestoreDB.collection("logSheets");
 
 
 
@@ -22,7 +24,7 @@ const playerCharacterTiersDB = firestoreDB.collection("playerCharacterTiers");
 // Firestore Queries
 //
 
-// Firestore Read Get
+// Firestore Read Get Admins
 function getAdminFirestore(adminID) {
 
     return adminsDB.doc(adminID).get().then((adminDoc) => {
@@ -44,7 +46,7 @@ function getAdminFirestore(adminID) {
 
 }
 
-// Firestore Read List
+// Firestore Read List Admins
 function getAdminsFirestore() {
 
     return adminsDB.get().then((adminDocs) => {
@@ -67,7 +69,7 @@ function getAdminsFirestore() {
 
 }
 
-// Firestore Write Create
+// Firestore Write Create Admins
 function createAdminFirestore(adminID) {
 
     let adminData = {};
@@ -85,7 +87,7 @@ function createAdminFirestore(adminID) {
 
 }
 
-// Firestore Write Delete
+// Firestore Write Delete Admins
 function deleteAdminFirestore(adminID) {
 
     return adminsDB.doc(adminID).delete().then(() => {
@@ -103,7 +105,7 @@ function deleteAdminFirestore(adminID) {
 
 }
 
-// Firestore Read Get
+// Firestore Read Get Players
 function getPlayerFirestore(playerID) {
 
     return playersDB.doc(playerID).get().then((playerDoc) => {
@@ -125,7 +127,7 @@ function getPlayerFirestore(playerID) {
 
 }
 
-// Firestore Read List
+// Firestore Read List Players
 function getPlayersFirestore() {
 
     return playersDB.get().then((playerDocs) => {
@@ -148,7 +150,7 @@ function getPlayersFirestore() {
 
 }
 
-// Firestore Write Create
+// Firestore Write Create Players
 function createPlayerFirstore(playerID, playerData) {
 
     return playersDB.doc(playerID).set(playerData).then((playerDoc) => {
@@ -164,7 +166,7 @@ function createPlayerFirstore(playerID, playerData) {
 
 }
 
-// Firestore Read Get
+// Firestore Read Get PlayerCharacters
 function getPlayerCharacterFirestore(playerCharacterID) {
 
     return playerCharactersDB.doc(playerCharacterID).get().then((playerCharacterDoc) => {
@@ -187,7 +189,7 @@ function getPlayerCharacterFirestore(playerCharacterID) {
 
 }
 
-// Firestore Read List
+// Firestore Read List PlayerCharacters
 function getPlayerCharactersFirestore() {
 
     return playerCharactersDB.get().then((playerCharacterDocs) => {
@@ -210,7 +212,7 @@ function getPlayerCharactersFirestore() {
 
 }
 
-// Firestore Read List Where
+// Firestore Read List Where PlayerCharacters
 function getPlayerOwnedPlayerCharactersFirestore(playerID) {
 
     return playerCharactersDB.where("playerID", "==", playerID).get().then((playerCharacterDocs) => {
@@ -231,7 +233,7 @@ function getPlayerOwnedPlayerCharactersFirestore(playerID) {
 
 }
 
-// Firestore Write Create
+// Firestore Write Create PlayerCharacters
 function createPlayerCharacterFirestore(playerCharacterData) {
 
     return playerCharactersDB.add(playerCharacterData).then((playerCharacterDoc) => {
@@ -247,7 +249,7 @@ function createPlayerCharacterFirestore(playerCharacterData) {
 
 }
 
-// Firestore Write Update
+// Firestore Write Update PlayerCharacters
 function updatePlayerCharacterFirestore(playerCharacterID, playerCharacterData) {
 
     if (playerCharacterData.id) {
@@ -267,7 +269,7 @@ function updatePlayerCharacterFirestore(playerCharacterID, playerCharacterData) 
 
 }
 
-// Firestore Read List
+// Firestore Read List PlayerCharacterTiers
 function getPlayerCharacterTiersFirestore() {
 
     return playerCharacterTiersDB.get().then((playerCharacterTierDocs) => {
@@ -284,6 +286,65 @@ function getPlayerCharacterTiersFirestore() {
 
     }).catch((error) => {
         console.error(`Player Character Tier Docs failed to retrieve.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
+// Firestore Read List LogSheets
+function getLogSheetsFirestore() {
+
+    return logSheetsDB.get().then((logSheetDocs) => {
+
+        let logSheets = [];
+
+        logSheetDocs.forEach((logSheetDoc) => {
+            let logSheetData = logSheetDoc.data();
+            logSheetData.id = logSheetDoc.id;
+            logSheets.push(logSheetData);
+        });
+
+        return logSheets;
+
+    }).catch((error) => {
+        console.error(`Log Sheet Docs failed to retrieve.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
+// Firestore Write Create LogSheets
+function createLogSheetFirestore(logSheetData) {
+
+    return logSheetsDB.add(logSheetData).then((logSheetDoc) => {
+
+        logSheetData.id = logSheetDoc.id;
+        return logSheetData;
+
+    }).catch((error) => {
+        console.error(`Log Sheet Doc ${logSheetData} failed to create.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
+// Firestore Write Update LogSheets
+function updateLogSheetFirestore(logSheetID, logSheetData) {
+
+    if (logSheetData.id) {
+        delete logSheetData.id;
+    }
+
+    return logSheetsDB.doc(logSheetID).update(logSheetData).then((logSheetDoc) => {
+
+        logSheetData.id = logSheetID;
+        return logSheetData;
+
+    }).catch((error) => {
+        console.error(`Log Sheet Doc ${logSheetID} failed to update.`);
         console.error(error);
         return null;
     });

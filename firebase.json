@@ -21,6 +21,10 @@
 				"destination": "/auth/login.html"
 			},
 			{
+				"source": "/logSheets/new",
+				"destination": "/logSheets/createLogSheet.html"	
+			},
+			{
 				"source": "/playerCharacters/new",
 				"destination": "/playerCharacters/createPC.html"
 			},

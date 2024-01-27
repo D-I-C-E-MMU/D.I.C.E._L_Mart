@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>D.I.C.E L Mart</title>
+
+    <script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
+    <script src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
+    <script src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <script src="/firebase/config.js"></script>
+    <script src="/firebase/firestore.js"></script>
+    <script src="/ui/general.js"></script>
+
+    <script src="/auth/verifyPlayer.js"></script>
+    <script src="/auth/signOut.js"></script>
+    <script>
+        verifySignIn();
+    </script>
+
+</head>
+
+<body>
+
+
+    <div id="top-bar"></div>
+    <script src="/ui/topBar.js"></script>
+
+    <h1>D.I.C.E L Mart Create Log Sheet</h1>
+
+    <div id="create-pc-content">
+        <div>
+            <label for="log-character-select">Character</label>
+            <select id="log-character-select">
+                <option value="invalid" disabled selected>Select a Character</option>
+            </select>
+        </div>
+        <div>
+            <label for="log-session-date-input">Session Date</label>
+            <input type="date" id="log-session-date-input">
+        </div>
+        <div>
+            <label for="log-level-input">Character Level</label>
+            <ul>
+                <li>Tier 1 (Level 01-04) = 2 Sessions per Level</li>
+                <li>Tier 2 (Level 05-10) = 3 Sessions per Level</li>
+                <li>Tier 3 (Level 11-16) = 4 Sessions per Level</li>
+                <li>Tier 4 (Level 17-20) = 5 Sessions per Level</li>
+            </ul>
+            <input type="number" id="log-level-input" value="0" step="1">
+        </div>
+        <div>
+            <label for="log-gold-input">Earned/Lost Gold (GP)</label>
+            <input type="number" id="log-gold-input" value="0">
+        </div>
+        <div>
+            <label for="log-remarks-input">Remarks</label>
+            <input type="text" id="log-remarks-input" placeholder="Died, Cursed, Imprisoned, etc">
+        </div>
+        <div>
+            <p id="create-log-error-text" hidden>*Error</p>
+        </div>
+        <div>
+            <button id="create-log-submit-btn">Create</button>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/style.css">
+
+</body>
+
+</html>
