@@ -3,27 +3,17 @@ rules_version = '2';
 service cloud.firestore {
   	match /databases/{database}/documents {
 
-		// This rule allows anyone with your Firestore database reference to view, edit,
-		// and delete all data in your Firestore database. It is useful for getting
-		// started, but it is configured to expire after 30 days because it
-		// leaves your app open to attackers. At that time, all client
-		// requests to your Firestore database will be denied.
-		//
-		// Make sure to write security rules for your app before that time, or else
-		// all client requests to your Firestore database will be denied until you Update
-		// your rules
-
-		// request.auth != null // means user must be logged in with Firebase's auth (Google Login)
-		// request.auth.uid == {docID} // means user (requester) can only access/edit their own assigned document
-
 		// WARNING: DO NOT DEPLOY THIS RULE. THIS IS FOR SEEDING PURPOSES ONLY.
 		match /{document=**} {
 			allow write:
 				if !exists(/databases/$(database)/documents/players/lypfuBmpWHRrpxVTE4Ytk1pTWrw1) && request.time < timestamp.date(2024, 1, 31);
     	}
+		// END OF WARNING
 
 		function isAdmin() {
-			return request.auth.uid != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+			return
+				request.auth.uid != null &&
+				exists(/databases/$(database)/documents/admins/$(request.auth.uid));
 		}
 
 		function timeWithin(time, durationSeconds) {
@@ -32,26 +22,30 @@ service cloud.firestore {
 		}
 
 		function levelValid(level) {
-			return level is int &&
-			level >= 1 && level <= 20;
+			return
+				level is int &&
+				level >= 1 && level <= 20;
 		}
 
 		function goldValid(gold) {
-			return gold is number;
+			return
+				gold is number;
 		}
 
 		match /players/{playerID} {
 
-			function owned() {
-				return request.auth != null && request.auth.uid == playerID;
+			function owns() {
+				return
+					request.auth != null &&
+					request.auth.uid == playerID;
 			}
 
 			// User can only read and update their own data
 			allow get:
-				if owned();
+				if owns();
 			// User can only create their own data if they are logged in
 			allow create:
-				if owned() &&
+				if owns() &&
 				"name" in request.resource.data &&
 				"email" in request.resource.data &&
 				// Required: "name", "email" (2)
@@ -59,8 +53,6 @@ service cloud.firestore {
 				// Must NOT:  (0)
 				// Total: 2 <= size <= 2
 				request.resource.data.keys().size() == 2;
-
-			// TODO Should player be able to update their own data?
 			
 			// Admins can read or update any player
 			allow read, update:
@@ -76,7 +68,7 @@ service cloud.firestore {
 		match /playerCharacters/{playerCharacterID} {
 
 			// Returns if the player's authenticated uid is equal to the existing player character's playerID
-			function playerOwned() {
+			function ownsCharacter() {
 				return
 					request.auth != null && request.auth.uid == resource.data.playerID;
 			}
@@ -91,15 +83,15 @@ service cloud.firestore {
 					exists(/databases/$(database)/documents/playerCharacterTiers/$(request.resource.data.tierID)); // Tier ID must exist
 			}
 
-
-			// Players can only read their own data (owned from resource.data.playerID)
+			// Players can only read their own characters (owned from resource.data.playerID)
 			allow read:
-				if playerOwned();
+				if ownsCharacter();
 			
 
 			// Players can only create/update their own data (owned from resource.data.playerID)
 			allow create:
-				if (request.auth != null && request.auth.uid == request.resource.data.playerID) && // Players' playerID must be equal to their auth uid
+				if request.auth != null &&
+				request.auth.uid == request.resource.data.playerID && // Players' playerID must be equal to their auth uid
 				hasBasicFields() &&
 				// Fields Check
 				!("approved" in request.resource.data) &&
@@ -131,23 +123,15 @@ service cloud.firestore {
 				levelValid(request.resource.data.level) && // level must be between 1 and 20
 				goldValid(request.resource.data.gold); // gold must be a number
 
-			// Admins can do anything to all playerCharacters
-			allow read:
-				if isAdmin(); //&&
-				// // Fields Check
-				// "updatedTimestamp" in request.resource.data &&
-				// // Values Check
-				// timeWithin(request.resource.data.updatedTimestamp, 300) // updatedTimestamp must be within 5 minutes upon the server receiving it
-
 		}
 
 		match /playerCharacterTiers/{playerCharacterTierID} {
 
 			// Players are allowed to read all playerCharacterTiers for player creation
-			allow list;
+			allow read;
 
 			// Admins can do anything to all playerCharacterTiers
-			allow read, write:
+			allow write:
 				if isAdmin();
 
 		}
@@ -155,18 +139,21 @@ service cloud.firestore {
 		match /logSheets/{logSheetID} {
 
 			// Returns if the player's authenticated uid is equal to the existing Player Character's playerID, and the Player Character is approved
-			function playerOwned() {
+			function ownsCharacter(playerCharacterID) {
 				return
 					request.auth != null &&
-					"playerCharacterID" in request.resource.data &&
-					exists(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)) &&
-					request.auth.uid == get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.playerID &&
-					get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.approved == true;
+					exists(/databases/$(database)/documents/playerCharacters/$(playerCharacterID)) &&
+					request.auth.uid == get(/databases/$(database)/documents/playerCharacters/$(playerCharacterID)).data.playerID &&
+					get(/databases/$(database)/documents/playerCharacters/$(playerCharacterID)).data.approved == true; // Player Character must be approved
 			}
+
+			// Only allow players to read their own log sheets
+			allow read:
+				if ownsCharacter(resource.data.playerCharacterID);
 
 			// Only allow players to create if they own the player character referenced in the log sheet request data
 			allow create:
-				if playerOwned() &&
+				if
 				// Fields Check
 				"playerCharacterID" in request.resource.data &&
 				"sessionDate" in request.resource.data &&
@@ -181,13 +168,14 @@ service cloud.firestore {
 				request.resource.data.keys().size() >= 5 &&
 				request.resource.data.keys().size() <= 6 &&
 				// Values Check
+				ownsCharacter(request.resource.data.playerCharacterID) &&
 				levelValid(request.resource.data.level) && // level must be between 1 and 20
 				goldValid(request.resource.data.gold) && // gold must be a number
 				timeWithin(request.resource.data.createdTimestamp, 300); // createdTimestamp must be within 5 minutes upon the server receiving it
 
 			// Allow admins to update to any log sheet except the ones they own themselves
 			allow update:
-				if isAdmin() && !(playerOwned());
+				if isAdmin() && !(ownsCharacter(resource.data.playerCharacterID));
 
 			// Allow admins to read all log sheets
 			allow read:
