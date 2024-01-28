@@ -1,4 +1,6 @@
 
+let playerCharacters = null;
+
 function setCreateLogSheetErrorText(error) {
 
     const createLogSheetErrorText = document.querySelector("#create-log-error-text");
@@ -58,8 +60,18 @@ function validateLogSheetData() {
     }
 
     let logSheetLevel = parseInt(logLevelInput.value);
+    if (isNaN(pcLevel) || pcLevel <= 0 || pcLevel > 20) {
+        return {
+            error: "*Level must be between 1 and 20.",
+        };
+    }
     
     let logSheetGold = Number(logGoldInput.value);
+    if (isNaN(pcGold)) {
+        return {
+            error: "*Please input a valid gold amount.",
+        };
+    }
 
     let logSheetRemarks = logRemarksInput.value;
 
@@ -77,22 +89,41 @@ function validateLogSheetData() {
 
 function initPlayerCharacters() {
 
-    getPlayerOwnedApprovedPlayerCharactersFirestore(player.id).then((playerCharacters) => {
-        if (!playerCharacters) {
+    const logCharacterSelect = document.querySelector("#log-character-select");
+
+    getPlayerOwnedApprovedPlayerCharactersFirestore(player.id).then((characters) => {
+        if (!characters) {
             alert("Failed to retrieve player characters");
             return;
         }
 
-        const logCharacterSelect = document.querySelector("#log-character-select");
-
-        playerCharacters.forEach((playerCharacter) => {
+        playerCharacters = {};
+        characters.forEach((character) => {
+            playerCharacters[character.id] = character;
             let option = document.createElement("option");
-            option.value = playerCharacter.id;
-            option.innerHTML = playerCharacter.name;
+            option.value = character.id;
+            option.innerHTML = character.name;
             logCharacterSelect.appendChild(option);
         });
 
     });
+
+    logCharacterSelect.addEventListener("change", () => {
+        console.log(logCharacterSelect.value);
+
+        const character = playerCharacters[logCharacterSelect.value];
+        if (!character) {
+            return;
+        }
+
+        const logLevelInput = document.querySelector("#log-level-input");
+        const logGoldInput = document.querySelector("#log-gold-input");
+
+        logLevelInput.value = character.level;
+        logGoldInput.value = character.gold;
+
+    });
+
 }
 
 

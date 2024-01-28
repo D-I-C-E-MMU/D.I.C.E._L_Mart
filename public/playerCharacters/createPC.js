@@ -88,8 +88,20 @@ function validatePCData() {
         }
 
         let pcLevel = parseInt(pcLevelInput.value);
+        console.log(pcLevel);
+        if (isNaN(pcLevel) || pcLevel <= 0 || pcLevel > 20) {
+            return {
+                error: "*Level must be between 1 and 20.",
+            };
+        }
 
         let pcGold = Number(pcGoldInput.value);
+        console.log(pcGold);
+        if (isNaN(pcGold)) {
+            return {
+                error: "*Please input a valid gold amount.",
+            };
+        }
 
         if (pcCreatedTimestampInput.value === "" ) {
             return {

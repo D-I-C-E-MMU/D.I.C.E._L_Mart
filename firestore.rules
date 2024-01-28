@@ -18,7 +18,8 @@ service cloud.firestore {
 
 		// WARNING: DO NOT DEPLOY THIS RULE. THIS IS FOR SEEDING PURPOSES ONLY.
 		match /{document=**} {
-			allow write: if !exists(/databases/$(database)/documents/players/lypfuBmpWHRrpxVTE4Ytk1pTWrw1) && request.time < timestamp.date(2024, 1, 31);
+			allow write:
+				if !exists(/databases/$(database)/documents/players/lypfuBmpWHRrpxVTE4Ytk1pTWrw1) && request.time < timestamp.date(2024, 1, 31);
     	}
 
 		function isAdmin() {
@@ -26,7 +27,17 @@ service cloud.firestore {
 		}
 
 		function timeWithin(time, durationSeconds) {
-			return request.time - time <= duration.value(durationSeconds, 's');
+			return
+				request.time - time <= duration.value(durationSeconds, 's');
+		}
+
+		function levelValid(level) {
+			return level is int &&
+			level >= 1 && level <= 20;
+		}
+
+		function goldValid(gold) {
+			return gold is number;
 		}
 
 		match /players/{playerID} {
@@ -51,8 +62,8 @@ service cloud.firestore {
 
 			// TODO Should player be able to update their own data?
 			
-			// Admins can do anything to all players
-			allow read, write:
+			// Admins can read or update any player
+			allow read, update:
 				if isAdmin();
 		}
 
@@ -66,7 +77,18 @@ service cloud.firestore {
 
 			// Returns if the player's authenticated uid is equal to the existing player character's playerID
 			function playerOwned() {
-				return request.auth != null && request.auth.uid == resource.data.playerID;
+				return
+					request.auth != null && request.auth.uid == resource.data.playerID;
+			}
+
+			function hasBasicFields() {
+				return
+					"playerID" in request.resource.data &&
+					"tierID" in request.resource.data &&
+					"name" in request.resource.data &&
+					"createdTimestamp" in request.resource.data &&
+					// Values Check
+					exists(/databases/$(database)/documents/playerCharacterTiers/$(request.resource.data.tierID)); // Tier ID must exist
 			}
 
 
@@ -78,31 +100,39 @@ service cloud.firestore {
 			// Players can only create/update their own data (owned from resource.data.playerID)
 			allow create:
 				if (request.auth != null && request.auth.uid == request.resource.data.playerID) && // Players' playerID must be equal to their auth uid
+				hasBasicFields() &&
 				// Fields Check
-				"playerID" in request.resource.data &&
-				"tierID" in request.resource.data &&
-				"name" in request.resource.data &&
-				"createdTimestamp" in request.resource.data &&
 				!("approved" in request.resource.data) &&
 				// Required: "playerID", "tierID", "name", "createdTimestamp" (4)
-				// Optional:  (0)
+				// Optional:  "remarks" (1)
 				// Must NOT: "approved" (1)
-				// Total: 4 <= size <= 4
-				request.resource.data.keys().size() == 4 &&
+				// Total: 4 <= size <= 5
+				request.resource.data.keys().size() >= 4 &&
+				request.resource.data.keys().size() <= 5 &&
 				// Values Check
-				exists(/databases/$(database)/documents/playerCharacterTiers/$(request.resource.data.tierID)) && // Tier ID must exist
 				timeWithin(request.resource.data.createdTimestamp, 300); // createdTimestamp must be within 5 minutes upon the server receiving it
-			
 
-			// TODO: Should players be able to update their character data?
-			//allow update:
-			//	if playerOwned() && // Players must own their own character
-			//	"updatedTimestamp" in request.resource.data && // updatedTimestamp must exist
-			//	timeWithin(request.resource.data.updatedTimestamp, 300) // updatedTimestamp must be within 5 minutes upon the server receiving it
-			
+			allow read:
+				if isAdmin();
+
+			allow create, update:
+				if isAdmin() &&
+				hasBasicFields() &&
+				// Fields Check
+				"level" in request.resource.data &&
+				"gold" in request.resource.data &&
+				"approved" in request.resource.data &&
+				// Required: "playerID", "tierID", "name", "createdTimestamp", "level", "gold", "approved" (7)
+				// Optional: "remarks" (1)
+				// Total: 7 <= size <= 8
+				request.resource.data.keys().size() >= 7 &&
+				request.resource.data.keys().size() <= 8 &&
+				// Values Check
+				levelValid(request.resource.data.level) && // level must be between 1 and 20
+				goldValid(request.resource.data.gold); // gold must be a number
 
 			// Admins can do anything to all playerCharacters
-			allow read, write:
+			allow read:
 				if isAdmin(); //&&
 				// // Fields Check
 				// "updatedTimestamp" in request.resource.data &&
@@ -117,7 +147,8 @@ service cloud.firestore {
 			allow list;
 
 			// Admins can do anything to all playerCharacterTiers
-			allow read, write: if isAdmin();
+			allow read, write:
+				if isAdmin();
 
 		}
 
@@ -125,36 +156,42 @@ service cloud.firestore {
 
 			// Returns if the player's authenticated uid is equal to the existing Player Character's playerID, and the Player Character is approved
 			function playerOwned() {
-				return request.auth != null &&
-				"playerCharacterID" in request.resource.data &&
-				exists(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)) &&
-				request.auth.uid == get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.playerID &&
-				get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.approved == true;
+				return
+					request.auth != null &&
+					"playerCharacterID" in request.resource.data &&
+					exists(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)) &&
+					request.auth.uid == get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.playerID &&
+					get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.approved == true;
 			}
 
 			// Only allow players to create if they own the player character referenced in the log sheet request data
-			allow create: if playerOwned() &&
-			// Fields Check
-			"playerCharacterID" in request.resource.data &&
-			"sessionDate" in request.resource.data &&
-			"level" in request.resource.data &&
-			"gold" in request.resource.data &&
-			"createdTimestamp" in request.resource.data &&
-			!("approved" in request.resource.data) &&
-			// Required: "playerCharacter", "sessionDate", "level", "gold", "createdTimestamp" (5)
-			// Optional: "remarks" (1)
-			// Must NOT: "approved" (1)
-			// Total: 5 <= size <= 6
-			request.resource.data.keys().size() >= 5 &&
-			request.resource.data.keys().size() <= 6 &&
-			// Values Check
-			timeWithin(request.resource.data.createdTimestamp, 300); // createdTimestamp must be within 5 minutes upon the server receiving it
+			allow create:
+				if playerOwned() &&
+				// Fields Check
+				"playerCharacterID" in request.resource.data &&
+				"sessionDate" in request.resource.data &&
+				"level" in request.resource.data &&
+				"gold" in request.resource.data &&
+				"createdTimestamp" in request.resource.data &&
+				!("approved" in request.resource.data) &&
+				// Required: "playerCharacter", "sessionDate", "level", "gold", "createdTimestamp" (5)
+				// Optional: "remarks" (1)
+				// Must NOT: "approved" (1)
+				// Total: 5 <= size <= 6
+				request.resource.data.keys().size() >= 5 &&
+				request.resource.data.keys().size() <= 6 &&
+				// Values Check
+				levelValid(request.resource.data.level) && // level must be between 1 and 20
+				goldValid(request.resource.data.gold) && // gold must be a number
+				timeWithin(request.resource.data.createdTimestamp, 300); // createdTimestamp must be within 5 minutes upon the server receiving it
 
 			// Allow admins to update to any log sheet except the ones they own themselves
-			allow update: if isAdmin() && !(playerOwned());
+			allow update:
+				if isAdmin() && !(playerOwned());
 
 			// Allow admins to read all log sheets
-			allow read: if isAdmin();
+			allow read:
+				if isAdmin();
 
 		}
     
