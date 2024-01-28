@@ -3,7 +3,6 @@ const notSignedInURL = "/"
 
 // Globally saved player detail. Contains cached (upon log in) database player information
 let player = null;
-let userUID = null;
 
 function retrievePlayerFromStorage() {
     let playerStr = localStorage.getItem(storagePlayerID);
@@ -40,7 +39,6 @@ function verifySignIn(onCompleted) {
             // User is signed in
             player = playerData;
             player.photoURL = firebaseUser.photoURL;
-            userUID = firebaseUser.uid;
         }
         else {
             clear();

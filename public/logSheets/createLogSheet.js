@@ -77,7 +77,7 @@ function validateLogSheetData() {
 
 function initPlayerCharacters() {
 
-    getPlayerOwnedPlayerCharactersFirestore().then((playerCharacters) => {
+    getPlayerOwnedPlayerCharactersFirestore(player.id).then((playerCharacters) => {
         if (!playerCharacters) {
             alert("Failed to retrieve player characters");
             return;
@@ -97,6 +97,6 @@ function initPlayerCharacters() {
 
 
 window.addEventListener("load", () => {
-    initCreatePCSubmitButton();
+    initCreateLogSheetButton();
     initPlayerCharacters();
 });

@@ -39,7 +39,7 @@ function getAdminFirestore(adminID) {
         return null;
 
     }).catch((error) => {
-        console.error(`Admin Doc ${userUID} failed to retrieve.`);
+        console.error(`Admin Doc ${adminID} failed to retrieve.`);
         console.error(error);
         return null;
     });

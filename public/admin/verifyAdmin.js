@@ -17,8 +17,8 @@ function retrieveAdminFromStorage() {
     return null;
 }
 
-function verifyAdminThroughFirebase(userUID) {
-    return getAdminFirestore(userUID).then((admin) => {
+function verifyAdminThroughFirebase(playerID) {
+    return getAdminFirestore(playerID).then((admin) => {
         if (admin) {
             return admin;
         }
@@ -53,7 +53,7 @@ function verifyFirestoreAdmin() {
             window.location.replace(adminHomeURL);
             return;
         }
-        verifyAdminThroughFirebase(userUID).then((adminData) => {
+        verifyAdminThroughFirebase(player.id).then((adminData) => {
             if (adminData) {
                 saveAdminToStorage(adminData);
                 admin = adminData;

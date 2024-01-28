@@ -108,7 +108,7 @@ function validatePCData() {
 
     }
     else {
-        createCharacterData.playerID = userUID;
+        createCharacterData.playerID = player.id;
         createCharacterData.createdTimestamp = firebase.firestore.Timestamp.now();
     }
 
