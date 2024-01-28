@@ -66,7 +66,7 @@ function validateLogSheetData() {
     let createLogSheetData = {
         playerCharacterID: logCharacterID,
         sessionDate: logSessionDate,
-        leveL: logSheetLevel,
+        level: logSheetLevel,
         gold: logSheetGold,
         createdTimestamp: firebase.firestore.Timestamp.now(),
         remarks: logSheetRemarks,
