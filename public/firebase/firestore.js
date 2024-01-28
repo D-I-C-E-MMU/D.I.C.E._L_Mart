@@ -336,6 +336,55 @@ function getLogSheetsFirestore() {
 
 }
 
+// Firestore Read List Where LogSheets
+function getPlayerCharacterLogSheetsFirestore(playerCharacterID) {
+
+    return logSheetsDB.where("playerCharacterID", "==", playerCharacterID).get().then((logSheetDocs) => {
+
+        let logSheets = [];
+
+        logSheetDocs.forEach((logSheetDoc) => {
+            let logSheetData = logSheetDoc.data();
+            logSheetData.id = logSheetDoc.id;
+            logSheets.push(logSheetData);
+        });
+
+        return logSheets;
+
+    }).catch((error) => {
+        console.error(`Log Sheet Docs failed to retrieve.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
+// Firestore Read List Where LogSheets
+function getAllPlayerCharacterLogSheetsFirestore(playerCharacterIDs) {
+
+    return logSheetsDB.where("playerCharacterID", "in", playerCharacterIDs).get().then((logSheetDocs) => {
+
+        let logSheets = {};
+
+        logSheetDocs.forEach((logSheetDoc) => {
+            let logSheetData = logSheetDoc.data();
+            logSheetData.id = logSheetDoc.id;
+            if (!logSheets[logSheetData.playerCharacterID]) {
+                logSheets[logSheetData.playerCharacterID] = [];
+            }
+            logSheets[logSheetData.playerCharacterID].push(logSheetData);
+        });
+
+        return logSheets;
+
+    }).catch((error) => {
+        console.error(`Log Sheet Docs failed to retrieve.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
 // Firestore Write Create LogSheets
 function createLogSheetFirestore(logSheetData) {
 

@@ -37,6 +37,7 @@
             <select id="log-character-select">
                 <option value="invalid" disabled selected>Select a Character</option>
             </select>
+            <p>Pending Log Sheets for <span id="log-status-pc-text">[Select a Character]</span>: <span id="log-status-count-text">[Select a Character]</span> (This may affect level and gold calculation)</p>
         </div>
         <div>
             <label for="log-session-date-input">Session Date</label>
@@ -44,16 +45,18 @@
         </div>
         <div>
             <label for="log-level-input">Character Level</label>
-            <ul>
-                <li>Tier 1 (Level 01-04) = 2 Sessions per Level</li>
-                <li>Tier 2 (Level 05-10) = 3 Sessions per Level</li>
-                <li>Tier 3 (Level 11-16) = 4 Sessions per Level</li>
-                <li>Tier 4 (Level 17-20) = 5 Sessions per Level</li>
-            </ul>
+            <label for="log-level-input">
+                <ul>
+                    <li>Tier 1 (Level 01-04) = 2 Sessions per Level</li>
+                    <li>Tier 2 (Level 05-10) = 3 Sessions per Level</li>
+                    <li>Tier 3 (Level 11-16) = 4 Sessions per Level</li>
+                    <li>Tier 4 (Level 17-20) = 5 Sessions per Level</li>
+                </ul>
+            </label>
             <label for="log-level-input">New Level</label>
             <input type="number" id="log-level-input" value="1" step="1" min="1" max="20">
             <div>
-                <label for="log-level-input">Previous Level: <span id="initial-level-text">(Select a Character)</span></label>
+                <label for="log-level-input">Previous Level: <span id="initial-level-text">[Select a Character]</span></label>
             </div>
         </div>
         <div>
@@ -61,10 +64,10 @@
             <input type="number" id="log-gold-input" value="0">
             <label for="log-gold-input">gp</label>
             <div>
-                <label for="log-gold-input">Previous Gold (GP): <span id="initial-gold-text">(Select a Character)</span></label>
+                <label for="log-gold-input">Previous Gold (GP): <span id="initial-gold-text">[Select a Character]</span></label>
             </div>
             <div>
-                <label for="log-gold-input">Nett Gold (GP) After Approval: <span id="nett-gold-text">(Select a Character)</span></label>
+                <label for="log-gold-input">Nett Gold (GP) After Approval: <span id="nett-gold-text">[Select a Character]</span></label>
             </div>
         </div>
         <div>

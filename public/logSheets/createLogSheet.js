@@ -1,5 +1,6 @@
 
 let playerCharacters = null;
+let logSheets = null;
 
 function setCreateLogSheetErrorText(error) {
 
@@ -106,10 +107,24 @@ function initPlayerCharacters() {
             logCharacterSelect.appendChild(option);
         });
 
+        let playerCharacterIDs = Object.keys(playerCharacters);
+        if (playerCharacterIDs.length == 0) {
+            return;
+        }
+
+        getAllPlayerCharacterLogSheetsFirestore(playerCharacterIDs).then((logs) => {
+            if (!logs) {
+                alert("Failed to retrieve player character log sheets");
+                return;
+            }
+
+            logSheets = logs;
+            updateLogSheetStatus();
+        });
+
     });
 
     logCharacterSelect.addEventListener("change", () => {
-        console.log(logCharacterSelect.value);
 
         const character = playerCharacters[logCharacterSelect.value];
         if (!character) {
@@ -125,6 +140,7 @@ function initPlayerCharacters() {
         initialGoldText.innerHTML = `${character.gold}gp`;
 
         updateNettGold();
+        updateLogSheetStatus();
 
     });
 
@@ -136,9 +152,7 @@ function initPlayerCharacters() {
 }
 
 function updateNettGold() {
-    const logCharacterSelect = document.querySelector("#log-character-select");
-    const character = playerCharacters[logCharacterSelect.value];
-
+    let character = getSelectedCharacter();
     if (!character) {
         return;
     }
@@ -147,6 +161,37 @@ function updateNettGold() {
     const logGoldInput = document.querySelector("#log-gold-input");
 
     nettGoldText.innerHTML = `${(Number(character.gold) + Number(logGoldInput.value))}gp`;
+}
+
+function updateLogSheetStatus() {
+
+    let logStatusPCText = document.querySelector("#log-status-pc-text");
+    let logStatusCountText = document.querySelector("#log-status-count-text");
+
+    let character = getSelectedCharacter();
+    if (!character) {
+        logStatusPCText.innerHTML = "[Select a Character]";
+        logStatusCountText.innerHTML = "[Select a Character]";
+        return;
+    }
+
+    if (!logSheets) {
+        logStatusPCText.innerHTML = character.name;
+        logStatusCountText.innerHTML = "[Loading...]";
+        return;
+    }
+
+    logStatusPCText.innerHTML = character.name;
+    logStatusCountText.innerHTML = logSheets[character.id].length;
+
+}
+
+function getSelectedCharacter() {
+
+    const logCharacterSelect = document.querySelector("#log-character-select");
+    const character = playerCharacters[logCharacterSelect.value];
+
+    return character;
 }
 
 
