@@ -38,7 +38,6 @@ function showTable(table, playerCharacters, type) {
             remarks = playerCharacter.additionalRemarks;
         }
 
-        let editIndex = 0;
         switch (type) {
             case 0:
                 // Approving Table
@@ -48,7 +47,6 @@ function showTable(table, playerCharacters, type) {
                     retrieveTierDescription(playerCharacter.tierID),
                     remarks,
                 ]);
-                editIndex = 4;
                 break;
 
             case 1:
@@ -59,7 +57,6 @@ function showTable(table, playerCharacters, type) {
                     playerCharacter.gold,
                     remarks,
                 ]);
-                editIndex = 4;
                 break;
 
             case 2:
@@ -71,7 +68,6 @@ function showTable(table, playerCharacters, type) {
                     playerCharacter.gold,
                     remarks,
                 ]);
-                editIndex = 5;
                 break;
         }
 
