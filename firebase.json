@@ -53,6 +53,14 @@
 				"destination": "/admin/playerCharacters/editPC.html"
 			},
 			{
+				"source": "/admin/logSheets",
+				"destination": "/admin/logSheets/listLogSheets.html"
+			},
+			{
+				"source": "/admin/logSheets/edit/**",
+				"destination": "/admin/logSheets/editLogSheets.html"
+			},
+			{
 				"source": "**",
 				"destination": "/404.html"
 			}

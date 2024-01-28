@@ -115,7 +115,7 @@ function getPlayerFirestore(playerID) {
             playerData.id = playerDoc.id;
             return playerData;
         }
-        
+
         console.warn(`Player Doc ${playerID} does not exist.`);
         return null;
 
@@ -271,6 +271,27 @@ function getPlayerOwnedApprovedPlayerCharactersFirestore(playerID) {
 
     }).catch((error) => {
         console.error(`Player Characters for Player ID ${playerID} failed to retrieve.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
+function getPlayerCharactersInFirestore(playerCharacterIDs) {
+
+    return playerCharactersDB.where(firebase.firestore.FieldPath.documentId(), "in", playerCharacterIDs).get().then((playerCharacterDocs) => {
+
+        let playerCharacters = {};
+
+        playerCharacterDocs.forEach((playerCharacterDoc) => {
+            let playerCharacterData = playerCharacterDoc.data();
+            playerCharacterData.id = playerCharacterDoc.id;
+            playerCharacters[playerCharacterData.id] = playerCharacterData;
+        });
+        return playerCharacters;
+
+    }).catch((error) => {
+        console.error(`Player Characters failed to retrieve.`);
         console.error(error);
         return null;
     });

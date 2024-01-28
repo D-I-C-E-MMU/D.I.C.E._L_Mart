@@ -182,7 +182,12 @@ function updateLogSheetStatus() {
     }
 
     logStatusPCText.innerHTML = character.name;
-    logStatusCountText.innerHTML = logSheets[character.id].length;
+    if (logSheets[character.id]) {
+        logStatusCountText.innerHTML = logSheets[character.id].length;
+    }
+    else {
+        logStatusCountText.innerHTML = 0;
+    }
 
 }
 
