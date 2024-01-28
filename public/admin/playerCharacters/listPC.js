@@ -121,55 +121,57 @@ function retrieveTierDescription(tierID) {
 }
 
 function joinAndSegregatePlayerCharactersWithPlayer(playerCharacters) {
-    let allFirebaseQueries = [];
-
     let approvingPlayerCharacters = [], unownedPlayerCharacters = [], validPlayerCharacters = []
+
+    let playerIDs = {};
 
     playerCharacters.forEach((playerCharacter) => {
 
         if (playerCharacter.playerID) {
-            let query = playersDB.doc(playerCharacter.playerID).get().then((playerDoc) => {
-
-
-                if (playerDoc.exists) {
-                    playerCharacter.player = playerDoc.data();
-                }
-                else {
-                    playerCharacter.player = {
-                        name: playerCharacter.playerID,
-                    }
-                    playerCharacter.additionalRemarks = "Player ID cannot be found!";
-                }
-                if (!playerCharacter.approved) {
-                    approvingPlayerCharacters.push(playerCharacter);
-                }
-                else {
-                    validPlayerCharacters.push(playerCharacter);
-                }
-
-            }).catch((error) => {
-                console.error(`Error getting player ${playerCharacter.playerID} for player character ${playerCharacter.id}`);
-                console.error(error);
-            });
-
-            allFirebaseQueries.push(query);
-        }
-        else {
-            if (!playerCharacter.approved) {
-                playerCharacter.additionalRemarks = "Unowned and Unapproved!";
-                playerCharacter.player = {
-                    name: "Unowned",
-                }
-                approvingPlayerCharacters.push(playerCharacter);
-            }
-            else {
-                unownedPlayerCharacters.push(playerCharacter);
-            }
+            playerIDs[playerCharacter.playerID] = true;
         }
 
     });
 
-    return Promise.all(allFirebaseQueries).then(() => {
+    let query = getPlayersInFirestore(Object.keys(playerIDs)).then((players) => {
+
+        playerCharacters.forEach((playerCharacter) => {
+
+            if (!playerCharacter.playerID) {
+                if (!playerCharacter.approved) {
+                    playerCharacter.additionalRemarks = "Unowned and Unapproved!";
+                    playerCharacter.player = {
+                        name: "Unowned",
+                    }
+                    approvingPlayerCharacters.push(playerCharacter);
+                }
+                else {
+                    unownedPlayerCharacters.push(playerCharacter);
+                }
+
+                return;
+            }
+
+            if (players[playerCharacter.playerID]) {
+                playerCharacter.player = players[playerCharacter.playerID];
+            }
+            else {
+                playerCharacter.player = {
+                    name: playerCharacter.playerID,
+                }
+                playerCharacter.additionalRemarks = "Player ID cannot be found!";
+            }
+            if (!playerCharacter.approved) {
+                approvingPlayerCharacters.push(playerCharacter);
+            }
+            else {
+                validPlayerCharacters.push(playerCharacter);
+            }
+        });
+
+    });
+
+    return query.then(() => {
         return {
             approvingPlayerCharacters: approvingPlayerCharacters,
             unownedPlayerCharacters: unownedPlayerCharacters,
