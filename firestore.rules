@@ -75,6 +75,7 @@ service cloud.firestore {
 
 			function hasBasicFields() {
 				return
+					// Fields Check
 					"playerID" in request.resource.data &&
 					"tierID" in request.resource.data &&
 					"name" in request.resource.data &&
@@ -147,35 +148,49 @@ service cloud.firestore {
 					get(/databases/$(database)/documents/playerCharacters/$(playerCharacterID)).data.approved == true; // Player Character must be approved
 			}
 
+			function hasBasicFields() {
+				return
+					// Fields Check
+					"playerCharacterID" in request.resource.data &&
+					"sessionDate" in request.resource.data &&
+					"level" in request.resource.data &&
+					"gold" in request.resource.data &&
+					"createdTimestamp" in request.resource.data &&
+					// Values Check
+					levelValid(request.resource.data.level) && // level must be between 1 and 20
+					goldValid(request.resource.data.gold); // gold must be a number
+			}
+
 			// Only allow players to read their own log sheets
 			allow read:
 				if ownsCharacter(resource.data.playerCharacterID);
 
 			// Only allow players to create if they own the player character referenced in the log sheet request data
 			allow create:
-				if
+				if hasBasicFields() &&
 				// Fields Check
-				"playerCharacterID" in request.resource.data &&
-				"sessionDate" in request.resource.data &&
-				"level" in request.resource.data &&
-				"gold" in request.resource.data &&
-				"createdTimestamp" in request.resource.data &&
 				!("approved" in request.resource.data) &&
-				// Required: "playerCharacter", "sessionDate", "level", "gold", "createdTimestamp" (5)
+				// Required: "playerCharacterID", "sessionDate", "level", "gold", "createdTimestamp" (5)
 				// Optional: "remarks" (1)
 				// Must NOT: "approved" (1)
 				// Total: 5 <= size <= 6
 				request.resource.data.keys().size() >= 5 &&
 				request.resource.data.keys().size() <= 6 &&
-				// Values Check
 				ownsCharacter(request.resource.data.playerCharacterID) &&
-				levelValid(request.resource.data.level) && // level must be between 1 and 20
-				goldValid(request.resource.data.gold) && // gold must be a number
 				timeWithin(request.resource.data.createdTimestamp, 300); // createdTimestamp must be within 5 minutes upon the server receiving it
 
 			// Allow admins to update to any log sheet except the ones they own themselves
 			allow update:
-				if isAdmin() && !(ownsCharacter(resource.data.playerCharacterID));
+				if isAdmin() &&
+				hasBasicFields() &&
+				// Fields Check
+				"approved" in request.resource.data &&
+				// Required: "playerCharacterID", "sessionDate", "level", "gold", "createdTimestamp", "remarks" (6)
+				// Optional: "remarks" (1)
+				// Total: 6 <= size <= 7
+				request.resource.data.keys().size() >= 6 &&
+				request.resource.data.keys().size() <= 7 &&
+				!(ownsCharacter(resource.data.playerCharacterID));
 
 			// Allow admins to read all log sheets
 			allow read:
