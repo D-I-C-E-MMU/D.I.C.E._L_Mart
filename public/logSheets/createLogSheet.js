@@ -77,7 +77,7 @@ function validateLogSheetData() {
 
 function initPlayerCharacters() {
 
-    getPlayerOwnedPlayerCharactersFirestore(player.id).then((playerCharacters) => {
+    getPlayerOwnedApprovedPlayerCharactersFirestore(player.id).then((playerCharacters) => {
         if (!playerCharacters) {
             alert("Failed to retrieve player characters");
             return;

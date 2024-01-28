@@ -123,11 +123,13 @@ service cloud.firestore {
 
 		match /logSheets/{logSheetID} {
 
-			// Returns if the player's authenticated uid is equal to the existing Player Character's playerID
+			// Returns if the player's authenticated uid is equal to the existing Player Character's playerID, and the Player Character is approved
 			function playerOwned() {
 				return request.auth != null &&
 				"playerCharacterID" in request.resource.data &&
-				request.auth.uid == get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.playerID;
+				exists(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)) &&
+				request.auth.uid == get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.playerID &&
+				get(/databases/$(database)/documents/playerCharacters/$(request.resource.data.playerCharacterID)).data.approved == true;
 			}
 
 			// Only allow players to create if they own the player character referenced in the log sheet request data

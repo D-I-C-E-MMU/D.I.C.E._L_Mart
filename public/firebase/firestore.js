@@ -233,6 +233,27 @@ function getPlayerOwnedPlayerCharactersFirestore(playerID) {
 
 }
 
+// Firestore Read List Where PlayerCharacters
+function getPlayerOwnedApprovedPlayerCharactersFirestore(playerID) {
+
+    return playerCharactersDB.where("playerID", "==", playerID).where("approved", "==", true).get().then((playerCharacterDocs) => {
+
+        let playerCharactersData = [];
+        playerCharacterDocs.forEach((playerCharacterDoc) => {
+            let playerCharacterData = playerCharacterDoc.data();
+            playerCharacterData.id = playerCharacterDoc.id;
+            playerCharactersData.push(playerCharacterData);
+        });
+        return playerCharactersData;
+
+    }).catch((error) => {
+        console.error(`Player Characters for Player ID ${playerID} failed to retrieve.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
 // Firestore Write Create PlayerCharacters
 function createPlayerCharacterFirestore(playerCharacterData) {
 
