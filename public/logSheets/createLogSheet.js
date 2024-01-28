@@ -65,7 +65,7 @@ function validateLogSheetData() {
             error: "*Level must be between 1 and 20.",
         };
     }
-    
+
     let logGold = Number(logGoldInput.value);
     if (isNaN(logGold)) {
         return {
@@ -116,14 +116,37 @@ function initPlayerCharacters() {
             return;
         }
 
+        const initialLevelText = document.querySelector("#initial-level-text");
         const logLevelInput = document.querySelector("#log-level-input");
-        const logGoldInput = document.querySelector("#log-gold-input");
+        const initialGoldText = document.querySelector("#initial-gold-text");
 
+        initialLevelText.innerHTML = character.level;
         logLevelInput.value = character.level;
-        logGoldInput.value = character.gold;
+        initialGoldText.innerHTML = `${character.gold}gp`;
+
+        updateNettGold();
 
     });
 
+    const logGoldInput = document.querySelector("#log-gold-input");
+    logGoldInput.addEventListener("change", () => {
+        updateNettGold();
+    });
+
+}
+
+function updateNettGold() {
+    const logCharacterSelect = document.querySelector("#log-character-select");
+    const character = playerCharacters[logCharacterSelect.value];
+
+    if (!character) {
+        return;
+    }
+
+    const nettGoldText = document.querySelector("#nett-gold-text");
+    const logGoldInput = document.querySelector("#log-gold-input");
+
+    nettGoldText.innerHTML = `${(Number(character.gold) + Number(logGoldInput.value))}gp`;
 }
 
 

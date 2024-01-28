@@ -50,11 +50,22 @@
                 <li>Tier 3 (Level 11-16) = 4 Sessions per Level</li>
                 <li>Tier 4 (Level 17-20) = 5 Sessions per Level</li>
             </ul>
+            <label for="log-level-input">New Level</label>
             <input type="number" id="log-level-input" value="1" step="1" min="1" max="20">
+            <div>
+                <label for="log-level-input">Previous Level: <span id="initial-level-text">(Select a Character)</span></label>
+            </div>
         </div>
         <div>
             <label for="log-gold-input">Earned/Lost Gold (GP)</label>
             <input type="number" id="log-gold-input" value="0">
+            <label for="log-gold-input">gp</label>
+            <div>
+                <label for="log-gold-input">Previous Gold (GP): <span id="initial-gold-text">(Select a Character)</span></label>
+            </div>
+            <div>
+                <label for="log-gold-input">Nett Gold (GP) After Approval: <span id="nett-gold-text">(Select a Character)</span></label>
+            </div>
         </div>
         <div>
             <label for="log-remarks-input">Remarks</label>
