@@ -5,19 +5,19 @@ let playerCharacterTiers = null;
 function loadPlayerCharacters() {
     getPlayerCharactersFirestore().then((playerCharacters) => {
 
-        joinAndSegregatePlayerCharactersWithPlayer(playerCharacters).then((segregatedPlayerCharacters) => {
+        joinAndSegregateLogSheetsWithPlayerAndCharacter(playerCharacters).then((segregatedPCs) => {
 
-            let approvingPlayerCharacters = segregatedPlayerCharacters.approvingPlayerCharacters;
-            let unownedPlayerCharacters = segregatedPlayerCharacters.unownedPlayerCharacters;
-            let validPlayerCharacters = segregatedPlayerCharacters.validPlayerCharacters;
+            let pendingPCs = segregatedPCs.pendingPCs;
+            let unownedPCs = segregatedPCs.unownedPCs;
+            let validPCs = segregatedPCs.validPCs;
 
-            let approvingTable = document.querySelector("#player-characters-approval-table");
-            let unownedTable = document.querySelector("#player-characters-unowned-table");
-            let validTable = document.querySelector("#player-characters-valid-table");
+            let approvingTable = document.querySelector("#pc-pending-table");
+            let unownedTable = document.querySelector("#pc-unowned-table");
+            let validTable = document.querySelector("#pc-valid-table");
 
-            showTable(approvingTable, approvingPlayerCharacters, 0);
-            showTable(unownedTable, unownedPlayerCharacters, 1);
-            showTable(validTable, validPlayerCharacters, 2);
+            showTable(approvingTable, pendingPCs, 0);
+            showTable(unownedTable, unownedPCs, 1);
+            showTable(validTable, validPCs, 2);
 
         });
 
@@ -111,8 +111,8 @@ function retrieveTierDescription(tierID) {
         });
         playerCharacterTiersQuerying = false;
 
-        let approvingTable = document.querySelector("#player-characters-approval-table");
-        for (let row of approvingTable.rows) {
+        let pendingTable = document.querySelector("#pc-pending-table");
+        for (let row of pendingTable.rows) {
             row.cells[2].innerHTML = retrieveTierDescription(row.cells[2].innerHTML);
         }
     });
@@ -120,8 +120,8 @@ function retrieveTierDescription(tierID) {
     return tierID;
 }
 
-function joinAndSegregatePlayerCharactersWithPlayer(playerCharacters) {
-    let approvingPlayerCharacters = [], unownedPlayerCharacters = [], validPlayerCharacters = []
+function joinAndSegregateLogSheetsWithPlayerAndCharacter(playerCharacters) {
+    let pendingPCs = [], unownedPCs = [], validPCs = []
 
     let playerIDs = {};
 
@@ -143,10 +143,10 @@ function joinAndSegregatePlayerCharactersWithPlayer(playerCharacters) {
                     playerCharacter.player = {
                         name: "Unowned",
                     }
-                    approvingPlayerCharacters.push(playerCharacter);
+                    pendingPCs.push(playerCharacter);
                 }
                 else {
-                    unownedPlayerCharacters.push(playerCharacter);
+                    unownedPCs.push(playerCharacter);
                 }
 
                 return;
@@ -162,10 +162,10 @@ function joinAndSegregatePlayerCharactersWithPlayer(playerCharacters) {
                 playerCharacter.additionalRemarks = "Player ID cannot be found!";
             }
             if (!playerCharacter.approved) {
-                approvingPlayerCharacters.push(playerCharacter);
+                pendingPCs.push(playerCharacter);
             }
             else {
-                validPlayerCharacters.push(playerCharacter);
+                validPCs.push(playerCharacter);
             }
         });
 
@@ -173,9 +173,9 @@ function joinAndSegregatePlayerCharactersWithPlayer(playerCharacters) {
 
     return query.then(() => {
         return {
-            approvingPlayerCharacters: approvingPlayerCharacters,
-            unownedPlayerCharacters: unownedPlayerCharacters,
-            validPlayerCharacters: validPlayerCharacters
+            pendingPCs: pendingPCs,
+            unownedPCs: unownedPCs,
+            validPCs: validPCs
         };
     });
 };
