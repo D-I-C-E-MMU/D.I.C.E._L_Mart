@@ -59,15 +59,15 @@ function validateLogSheetData() {
         };
     }
 
-    let logSheetLevel = parseInt(logLevelInput.value);
-    if (isNaN(pcLevel) || pcLevel <= 0 || pcLevel > 20) {
+    let logLevel = parseInt(logLevelInput.value);
+    if (isNaN(logLevel) || logLevel <= 0 || logLevel > 20) {
         return {
             error: "*Level must be between 1 and 20.",
         };
     }
     
-    let logSheetGold = Number(logGoldInput.value);
-    if (isNaN(pcGold)) {
+    let logGold = Number(logGoldInput.value);
+    if (isNaN(logGold)) {
         return {
             error: "*Please input a valid gold amount.",
         };
@@ -78,8 +78,8 @@ function validateLogSheetData() {
     let createLogSheetData = {
         playerCharacterID: logCharacterID,
         sessionDate: logSessionDate,
-        level: logSheetLevel,
-        gold: logSheetGold,
+        level: logLevel,
+        gold: logGold,
         createdTimestamp: firebase.firestore.Timestamp.now(),
         remarks: logSheetRemarks,
     }
