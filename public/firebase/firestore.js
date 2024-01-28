@@ -150,6 +150,29 @@ function getPlayersFirestore() {
 
 }
 
+// Firestore Read List Where Players
+function getPlayersInFirestore(playerIDs) {
+
+    return playersDB.where(firebase.firestore.FieldPath.documentId(), "in", playerIDs).get().then((playerDocs) => {
+
+        let players = {};
+
+        playerDocs.forEach((playerDoc) => {
+            let playerData = playerDoc.data();
+            playerData.id = playerDoc.id;
+            players[playerData.id] = playerData;
+        });
+
+        return players;
+
+    }).catch((error) => {
+        console.error(`Player Docs failed to retrieve.`);
+        console.error(error);
+        return null;
+    });
+
+}
+
 // Firestore Write Create Players
 function createPlayerFirstore(playerID, playerData) {
 
