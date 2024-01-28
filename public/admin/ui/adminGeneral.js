@@ -1,9 +1,13 @@
 
 const adminHomeURL = "/admin/home";
 const adminManagementURL = "/admin/manage";
+
 const playerCharactersURL = "/admin/playerCharacters";
 const createPlayerCharacterURL = "/admin/playerCharacters/new";
 const editPlayerCharacterURL = "/admin/playerCharacters/edit";
+
+const logSheetsURL = "/admin/logSheets";
+const editLogSheetURL = "/admin/logSheets/edit"
 
 let onAdminUpdatedCallbacks = [];
 let onAdminUpdatedCallbackEmitted = false;
@@ -18,7 +22,7 @@ function initAdminManagement() {
 }
 
 function initPlayerCharacters() {
-    const playerCharacterBtn = document.querySelectorAll(".player-character-btn");
+    const playerCharacterBtn = document.querySelectorAll(".pc-btn");
     playerCharacterBtn.forEach((button) => {
         button.addEventListener("click", () => {
             window.location.href = playerCharactersURL;
@@ -28,10 +32,19 @@ function initPlayerCharacters() {
 }
 
 function initCreatePlayerCharacter() {
-    const playerCharacterCreateBtn = document.querySelectorAll(".player-character-create-btn");
+    const playerCharacterCreateBtn = document.querySelectorAll(".pc-create-btn");
     playerCharacterCreateBtn.forEach((button) => {
         button.addEventListener("click", () => {
             window.location.href = createPlayerCharacterURL;
+        });
+    });
+}
+
+function initLogSheets() {
+    const logSheetsBtn = document.querySelectorAll(".logs-btn");
+    logSheetsBtn.forEach((button) => {
+        button.addEventListener("click", () => {
+            window.location.href = logSheetsURL;
         });
     });
 }
@@ -54,4 +67,5 @@ window.addEventListener('load', () => {
     initAdminManagement();
     initPlayerCharacters();
     initCreatePlayerCharacter();
+    initLogSheets();
 });
